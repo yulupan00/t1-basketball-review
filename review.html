@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caption Quality Review - T1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <span class="nav-title" id="navTitle">Caption Review</span>
+            <span class="nav-user">User: <strong id="navUserId">…</strong></span>
+        </div>
+        <div class="nav-right">
+            <span class="progress-text" id="progressText">0 / 0</span>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="review-container">
+        <div class="category-header">
+            <span class="category-label">Item</span>
+            <span class="category-name" id="itemNumber">…</span>
+            <span class="category-progress" id="itemMeta"></span>
+        </div>
+
+        <div class="panels">
+            <div class="panel panel-left">
+                <div class="panel-title">Ground Truth Caption</div>
+                <div class="panel-body" id="gtText"></div>
+            </div>
+            <div class="panel panel-right">
+                <div class="panel-title">Model Prediction</div>
+                <div class="panel-body" id="predText"></div>
+            </div>
+        </div>
+
+        <div class="scores-card">
+            <div class="scores-card-title">Scores (1 = not aligned, 5 = fully aligned)</div>
+            <div class="scores-grid" id="scoresGrid">
+                <!-- score rows injected by review.js -->
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+        <div class="saved-message" id="savedMessage" style="display: none;">
+            <i class="bi bi-check-circle-fill"></i> Saved
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline-secondary" id="prevBtn" type="button" disabled>
+                <i class="bi bi-chevron-left"></i> Previous
+            </button>
+            <button class="btn btn-primary" id="submitBtn" type="button">
+                Submit &amp; Next
+            </button>
+            <button class="btn btn-outline-primary" id="nextBtn" type="button" style="display: none;">
+                Next <i class="bi bi-chevron-right"></i>
+            </button>
+            <button class="btn btn-success" id="finishBtn" type="button" style="display: none;">
+                Finish Study <i class="bi bi-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="submitOverlay" style="display: none;">
+        <div class="modal-card">
+            <div id="submitStatus">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <p>Submitting your responses…</p>
+            </div>
+            <div id="submitSuccess" style="display: none;">
+                <h2>Thank You!</h2>
+                <p>Your responses have been submitted.</p>
+                <p class="text-muted">You can close this tab.</p>
+            </div>
+            <div id="submitError" style="display: none;">
+                <h2>Submission Issue</h2>
+                <p id="submitErrorText" class="text-muted"></p>
+                <p>Use the button below to download your responses and email them to the study organizer.</p>
+                <button class="btn btn-primary" id="downloadFallbackBtn" type="button">
+                    <i class="bi bi-download"></i> Download Responses (JSON)
+                </button>
+                <button class="btn btn-outline-secondary mt-2" id="retrySubmitBtn" type="button">Retry Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const sport = params.get("sport") || "basketball";
+            const SPORTS = {basketball: "Basketball", hockey: "Hockey", soccer: "Soccer"};
+            if (!SPORTS[sport]) { window.location.href = "index.html"; return; }
+            window.T1_SPORT = sport;
+            window.T1_SPORT_LABEL = SPORTS[sport];
+            document.getElementById("navTitle").textContent = `${SPORTS[sport]} Caption Review`;
+            document.title = `${SPORTS[sport]} Caption Review - T1`;
+
+            const s1 = document.createElement("script");
+            s1.src = `data/samples_${sport}.js`;
+            s1.onload = () => {
+                const s2 = document.createElement("script");
+                s2.src = "js/review.js";
+                document.body.appendChild(s2);
+            };
+            s1.onerror = () => {
+                document.body.innerHTML = `<div style="padding:40px;text-align:center;">
+                    <h2>Failed to load data for ${SPORTS[sport]}</h2>
+                    <p><a href="index.html">Return to sport selection</a></p></div>`;
+            };
+            document.body.appendChild(s1);
+        })();
+    </script>
+</body>
+</html>

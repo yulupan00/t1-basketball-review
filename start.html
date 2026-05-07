@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caption Quality Review - Sign in</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="landing-container">
+        <div class="landing-card">
+            <div class="landing-header">
+                <h1 id="pageTitle">Caption Review</h1>
+                <p class="subtitle" id="sportSubtitle">Human Evaluation Study (T1)</p>
+            </div>
+            <div class="landing-body">
+                <p class="description">
+                    In this study you will review <strong id="totalCount">…</strong>
+                    <strong id="sportLabel"></strong> caption pairs. For each pair, compare
+                    the model's caption against the ground truth and assign a score (1-5)
+                    for each of seven alignment dimensions.
+                </p>
+                <div class="instructions">
+                    <h5>Scoring rubric (1-5 per dimension)</h5>
+                    <ul>
+                        <li><strong>1</strong> — Not aligned at all / contradicts the ground truth.</li>
+                        <li><strong>2</strong> — Largely misaligned; key facts missing or wrong.</li>
+                        <li><strong>3</strong> — Partially aligned; some correct, some incorrect.</li>
+                        <li><strong>4</strong> — Mostly aligned; minor issues only.</li>
+                        <li><strong>5</strong> — Fully aligned with the ground truth.</li>
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h5>Dimensions you will score</h5>
+                    <ul>
+                        <li><strong>Action accuracy</strong> — does the prediction describe the same actions?</li>
+                        <li><strong>Identity accuracy</strong> — same players / teams / entities?</li>
+                        <li><strong>Causality &amp; outcome</strong> — does the result / cause-effect match?</li>
+                        <li><strong>Spatial understanding</strong> — locations / positions consistent?</li>
+                        <li><strong>Temporal understanding</strong> — timing / order of events consistent?</li>
+                        <li><strong>Contextual details</strong> — score, period, supporting facts consistent?</li>
+                        <li><strong>Final holistic score</strong> — overall alignment with the ground truth.</li>
+                    </ul>
+                </div>
+
+                <div class="resume-banner" id="resumeBanner" style="display: none;">
+                    <p>You have a previous session in progress.</p>
+                    <div class="resume-actions">
+                        <button class="btn btn-outline-primary btn-sm" id="resumeBtn" type="button">Resume</button>
+                        <button class="btn btn-outline-secondary btn-sm" id="newSessionBtn" type="button">Start Fresh</button>
+                    </div>
+                </div>
+
+                <form id="startForm" class="start-form">
+                    <div class="mb-3">
+                        <label for="user_id" class="form-label">Enter your User ID</label>
+                        <input type="text" class="form-control" id="user_id" name="user_id"
+                               placeholder="e.g., reviewer_01" required autocomplete="off">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user_email" class="form-label">Email <span class="text-muted" style="font-weight:400;">(optional)</span></label>
+                        <input type="email" class="form-control" id="user_email" name="user_email"
+                               placeholder="you@example.com" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Start Review</button>
+                </form>
+
+                <p class="mt-3 text-center"><a href="index.html" class="text-muted small">← Back to sport selection</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const sport = params.get("sport") || "basketball";
+            const SPORTS = {basketball: "Basketball", hockey: "Hockey", soccer: "Soccer"};
+            if (!SPORTS[sport]) { window.location.href = "index.html"; return; }
+
+            const STORAGE_SESSION = `t1_${sport}_session`;
+            const STORAGE_SCORES = `t1_${sport}_scores`;
+
+            document.getElementById("sportLabel").textContent = SPORTS[sport].toLowerCase();
+            document.getElementById("pageTitle").textContent = `${SPORTS[sport]} Caption Review`;
+            document.getElementById("sportSubtitle").textContent = `Human Evaluation Study (T1 · ${SPORTS[sport]})`;
+            document.title = `${SPORTS[sport]} Caption Review`;
+
+            const s = document.createElement("script");
+            s.src = `data/samples_${sport}.js`;
+            s.onload = () => {
+                document.getElementById("totalCount").textContent = window.SAMPLES.length;
+            };
+            s.onerror = () => {
+                document.getElementById("totalCount").textContent = "?";
+            };
+            document.body.appendChild(s);
+
+            const userIdInput = document.getElementById("user_id");
+            const userEmailInput = document.getElementById("user_email");
+            const resumeBanner = document.getElementById("resumeBanner");
+
+            try {
+                const sess = JSON.parse(localStorage.getItem(STORAGE_SESSION) || "null");
+                if (sess && sess.userId) {
+                    userIdInput.value = sess.userId;
+                    userEmailInput.value = sess.userEmail || "";
+                    resumeBanner.style.display = "block";
+                }
+            } catch (_) { /* ignore */ }
+
+            document.getElementById("resumeBtn").addEventListener("click", () => {
+                window.location.href = `review.html?sport=${sport}`;
+            });
+            document.getElementById("newSessionBtn").addEventListener("click", () => {
+                localStorage.removeItem(STORAGE_SESSION);
+                localStorage.removeItem(STORAGE_SCORES);
+                resumeBanner.style.display = "none";
+                userIdInput.value = "";
+                userEmailInput.value = "";
+                userIdInput.focus();
+            });
+
+            document.getElementById("startForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const userId = userIdInput.value.trim();
+                if (!userId) return;
+                const session = {
+                    userId,
+                    userEmail: userEmailInput.value.trim(),
+                    sport,
+                    sessionId: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+                    startedAt: new Date().toISOString(),
+                };
+                const prior = localStorage.getItem(STORAGE_SESSION);
+                if (prior) {
+                    try {
+                        const p = JSON.parse(prior);
+                        if (p.userId !== userId) localStorage.removeItem(STORAGE_SCORES);
+                    } catch (_) { localStorage.removeItem(STORAGE_SCORES); }
+                }
+                localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
+                window.location.href = `review.html?sport=${sport}`;
+            });
+        })();
+    </script>
+</body>
+</html>
