@@ -1,5 +1,5 @@
 // T1 Human Study (static) - caption-quality review.
-// Per item, the reviewer enters seven 1-5 scores comparing the model's
+// Per item, the reviewer enters seven 0-5 scores comparing the model's
 // caption to the ground truth. Progress is persisted in localStorage.
 // On Finish, the full payload (including the original LLM-judge scores
 // kept inside each sample so downstream agreement analysis has both
@@ -88,13 +88,13 @@
 
             const input = document.createElement("input");
             input.type = "number";
-            input.min = "1";
+            input.min = "0";
             input.max = "5";
             input.step = "1";
             input.id = `score-${key}`;
             input.dataset.key = key;
             input.className = "score-input";
-            input.placeholder = "1-5";
+            input.placeholder = "0-5";
             input.inputMode = "numeric";
             if (existing && existing.scores && existing.scores[key] != null) {
                 input.value = String(existing.scores[key]);
@@ -113,8 +113,8 @@
             const raw = (el.value || "").trim();
             if (raw === "") return { error: `Please score "${key.replace(/_/g, " ")}".` };
             const n = Number(raw);
-            if (!Number.isInteger(n) || n < 1 || n > 5) {
-                return { error: `Score for "${key.replace(/_/g, " ")}" must be an integer 1-5.` };
+            if (!Number.isInteger(n) || n < 0 || n > 5) {
+                return { error: `Score for "${key.replace(/_/g, " ")}" must be an integer 0-5.` };
             }
             out[key] = n;
         }
