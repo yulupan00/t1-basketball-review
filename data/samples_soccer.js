@@ -2,54 +2,56 @@
 window.SAMPLES = [
   {
     "action_accuracy": {
-      "gt_analysis": "Sequence of actions: (1) C. Buendia executes a successful lateral pass to C. Vaughn. (2) C. Vaughn completes a forward long through pass to S. Anderson. (3) M. Dobson engages in a duel with S. Anderson and loses possession.",
-      "pred_analysis": "Sequence of actions: (1) M. O'Neill executes a successful lateral pass to M. Qongo. (2) M. Qongo attempts an unsuccessful long forward pass to M. Ventura. (3) Receiver is caught offside (implying an offside outcome/stoppage).",
-      "justification_cot": "Match: both captions include a successful lateral pass followed by a long forward pass attempt/action. Mismatches: GT specifies the second action is a completed forward long through pass (successful), while Pred says the long forward pass is unsuccessful and results in offside. GT includes a duel where Dobson loses possession to Anderson; Pred replaces this with an offside event and no duel/possession-losing challenge. Pred also changes the intended receiver of the long pass (Ventura vs Anderson) and changes the pass type nuance (through pass in GT vs generic long forward pass in Pred). Overall, only the broad template of 'lateral pass then long pass' matches; key action outcomes and the duel are wrong/hallucinated.",
+      "gt_analysis": "Actions: (1) J. Jackson executes a touch (preparatory touch) before passing. (2) J. Jackson makes a successful lateral pass to N. Dauchot.",
+      "pred_analysis": "Actions: (1) J. Jackson executes a successful lateral pass to N. Dauchot. (2) N. Dauchot completes a forward pass to C. Wood. (3) C. Wood makes a successful lateral pass to D. Shockey.",
+      "justification_cot": "Match: Both describe Jackson making a successful lateral pass to Dauchot. Omission: Pred omits the GT's specific pre-pass touch by Jackson. Hallucinations: Pred adds an entire subsequent passing sequence (Dauchot forward to Wood; Wood lateral to Shockey) not present in GT. Because multiple additional actions are introduced beyond the GT, action specificity becomes unreliable despite the main pass being correct.",
       "score": 2
     },
     "identity_accuracy": {
-      "gt_analysis": "Entities and roles: C. Buendia (Saint Louis) is the lateral passer to C. Vaughn (Saint Louis). C. Vaughn is the long through-passer to S. Anderson (Saint Louis). M. Dobson is the opponent who duels S. Anderson and loses possession. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "pred_analysis": "Entities and roles: M. O'Neill (Creighton) is lateral passer to M. Qongo (Creighton). M. Qongo attempts long forward pass to M. Ventura (Creighton). Mentions positions: center-back, left center-back, left wing-back. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "justification_cot": "Teams match (both state Creighton vs Saint Louis). Player identities and role assignments do not match at all: Pred uses O'Neill/Qongo/Ventura instead of Buendia/Vaughn/Anderson/Dobson, and swaps implied team involvement (GT main passing sequence is by Saint Louis players; Pred attributes passing to Creighton players). Pred also introduces positional identifiers not present in GT (hallucinated). No correct player identification beyond the team names.",
-      "score": 1
+      "gt_analysis": "Entities/roles: J. Jackson (LMU Lions goalkeeper) passes to N. Dauchot (right center-back). Opponent: San Diego Toreros.",
+      "pred_analysis": "Entities/roles: J. Jackson (LMU Lions goalkeeper) passes to N. Dauchot (right center back). Adds C. Wood (left back) and D. Shockey (right back). Opponent claimed: San Diego State Aztecs.",
+      "justification_cot": "Match: Jackson as LMU goalkeeper and Dauchot as right center-back are correctly identified and assigned the correct passer/receiver roles. Contradiction: Opponent identity is wrong (Aztecs vs GT Toreros). Hallucinations: Introduces C. Wood and D. Shockey and assigns them roles/actions not supported by GT. Net: some core identities correct, but added players plus wrong opponent is a major reliability issue.",
+      "score": 2
     },
     "causality_outcome": {
-      "gt_analysis": "Outcomes/links: Buendia's lateral pass is successful to Vaughn → Vaughn's forward long through pass is completed to Anderson → Dobson duels Anderson and loses possession (implying Anderson/side retains or wins the ball).",
-      "pred_analysis": "Outcomes/links: O'Neill's lateral pass is successful to Qongo → Qongo's long forward pass is unsuccessful because the target (Ventura) is offside → play likely stops due to offside (implied).",
-      "justification_cot": "Only the first outcome (a successful lateral pass) aligns in a generic sense. The key causal chain in GT is successful long through pass leading into a duel and a possession loss by Dobson; Pred instead claims an unsuccessful long pass caused by offside and contains no duel or possession-loss event. This is a major contradiction of the central outcome (successful progression vs offside stoppage) and adds a hallucinated offside outcome.",
-      "score": 1
+      "gt_analysis": "Outcome/causal link: After a touch, Jackson's lateral pass is successful and reaches N. Dauchot.",
+      "pred_analysis": "Outcome/causal links: Jackson's lateral pass successfully reaches Dauchot; then Dauchot successfully forwards to Wood; Wood successfully laterals to Shockey.",
+      "justification_cot": "Match: Main causal link/outcome (Jackson successfully laterals to Dauchot) is correct. Omission: Pred drops the 'touch before pass' precursor that is part of the GT causal description. Hallucinations: Adds two additional successful passes and recipients not in GT, creating incorrect extended causality beyond the described play.",
+      "score": 2
     },
     "spatial_understanding": {
-      "gt_analysis": "Spatial cues: lateral pass (sideways ball movement), then a forward long through pass (vertical/progressive), followed by a duel between Dobson and Anderson (no explicit field zone given).",
-      "pred_analysis": "Spatial cues: lateral pass, then long forward pass; additionally includes positional labels (center-back, left center-back, left wing-back) and an offside situation (implies advanced positioning).",
-      "justification_cot": "Partial match: both reflect lateral then forward long movement directions. However, Pred's detailed spatial/role positioning on the left side (left CB/left WB) is not supported by GT and is effectively hallucinated. GT provides no left/right/defensive-line specifics, so Pred's added spatial specificity is unreliable. Still, the basic lateral/forward directions are consistent.",
+      "gt_analysis": "Spatial cues: 'lateral pass'; Dauchot positioned as right center-back (implies right side central defense).",
+      "pred_analysis": "Spatial cues: 'lateral pass' from Jackson to Dauchot; then a 'forward pass' to a left back (Wood) and a 'lateral pass' to a right back (Shockey).",
+      "justification_cot": "Match: Correctly retains the key spatial descriptor that Jackson's pass to Dauchot is lateral. Hallucinations: Adds extra directional/location context (forward to left back; lateral to right back) not stated in GT, which may be spatially plausible but is unsupported. Overall spatial core is right, but additional spatial claims reduce accuracy.",
       "score": 3
     },
     "temporal_understanding": {
-      "gt_analysis": "Order: successful lateral pass → successful forward long through pass → duel occurs → Dobson loses possession.",
-      "pred_analysis": "Order: successful lateral pass → attempted long forward pass → offside outcome/stoppage.",
-      "justification_cot": "Pred preserves the initial ordering pattern of 'lateral pass then long forward pass'. But it replaces the final event (duel/possession loss) with an offside outcome and changes the success status of the long pass. So the overall sequence structure only partially aligns and diverges significantly after the second event.",
+      "gt_analysis": "Sequence: Jackson touch → Jackson successful lateral pass to Dauchot (during match vs San Diego Toreros).",
+      "pred_analysis": "Sequence: Jackson lateral pass to Dauchot → Dauchot forward pass to Wood → Wood lateral pass to Shockey.",
+      "justification_cot": "Match: Jackson passing to Dauchot occurs first in both. Error/omission: Pred removes the initial 'touch before pass' event (so the GT's event-1 is missing). Hallucinations: Pred appends additional events after the Dauchot reception that are not in GT, so while the early ordering partially aligns, the overall temporal structure contains fabricated continuation.",
       "score": 3
     },
     "contextual_details": {
-      "gt_analysis": "Context: Match is Creighton Bluejays vs Saint Louis Billikens. Play is open-play passing progression involving Saint Louis players, ending in a duel where Dobson loses possession.",
-      "pred_analysis": "Context: Match is Creighton Bluejays vs Saint Louis Billikens. Describes Creighton defenders passing, then an offside involving a wing-back.",
-      "justification_cot": "Teams are correctly stated, which is a key context match. However, Pred misstates which team is executing the passing sequence (Creighton vs GT's Saint Louis sequence) and introduces an offside context not present in GT, while omitting the duel/possession-loss context. Thus, only partial context (teams) is correct.",
+      "gt_analysis": "Context: Match is LMU Lions vs San Diego Toreros. Roles: Jackson is LMU goalkeeper; Dauchot is right center-back.",
+      "pred_analysis": "Context: Claims teams are LMU Lions vs San Diego State Aztecs. Includes roles for Jackson and Dauchot; adds Wood and Shockey with fullback positions.",
+      "justification_cot": "Match: Correctly states LMU Lions and correctly frames Jackson as goalkeeper and Dauchot as right center-back. Major contradiction: Opponent team is wrong (San Diego State Aztecs vs San Diego Toreros). Hallucinations: Adds extra players/positions and an extended passing context not provided by GT.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Main idea: Saint Louis progression—Buendia lateral pass to Vaughn, Vaughn completes long through ball to Anderson, then Anderson is involved in a duel where Dobson loses possession; match is Creighton vs Saint Louis.",
-      "pred_analysis": "Main idea: Creighton defensive lateral pass then an unsuccessful long ball to Ventura with offside; match is Creighton vs Saint Louis.",
-      "justification_cot": "Although the teams are correct and the first two action types loosely resemble the GT pattern (lateral pass followed by a long forward pass), the caption is factually unreliable: wrong players throughout (major), wrong team performing the sequence (major), wrong outcome of the long pass (critical to the play's result: completed through ball vs unsuccessful/offside), and it hallucinates offside while omitting the duel and possession-loss conclusion. These constitute multiple major errors and a critical outcome misrepresentation, making the overall caption misleading.",
+      "gt_analysis": "Core play: Jackson (LMU GK) takes a touch and then completes a successful lateral pass to Dauchot (right CB) in a match vs San Diego Toreros.",
+      "pred_analysis": "Captures Jackson successful lateral pass to Dauchot and their roles, but changes opponent to San Diego State Aztecs and invents a longer passing sequence involving Wood and Shockey.",
+      "justification_cot": "The caption preserves the main event (Jackson laterals successfully to Dauchot) but contains multiple major issues: (1) wrong opponent team (major context/identity contradiction), (2) multiple hallucinated subsequent passes and players, and (3) omission of the pre-pass touch. No critical error about the main outcome (the pass remains successful), but there are three+ major errors/hallucinations overall, making it misleading as a full description.",
       "score": 2
     },
+    "cost": 0.0188118,
+    "data_source": "2033215246",
     "video": "/mnt/sun/shared/datasets/sports_dataset/soccer/talent_scout/talents/539740/touch_2033215246.mp4",
     "ground_truth": "J. Jackson, the goalkeeper for the LMU Lions, executed a touch before making a successful lateral pass to N. Dauchot, the right center-back, during the match against the San Diego Toreros.",
     "prediction": "J. Jackson, the goalkeeper for the LMU Lions, executed a successful lateral pass to N. Dauchot, the right center back. N. Dauchot then completed a forward pass to C. Wood, the left back, who followed up with a successful lateral pass to D. Shockey, the right back. The teams competing are the LMU Lions and the San Diego State Aztecs.",
     "id": 41,
     "sport": "soccer",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 825
   },
   {
@@ -108,54 +110,56 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Sequence of actions: (1) C. Buendia executes a successful lateral pass to C. Vaughn. (2) C. Vaughn completes a forward long through pass to S. Anderson. (3) M. Dobson engages in a duel with S. Anderson and loses possession.",
-      "pred_analysis": "Sequence of actions: (1) M. O'Neill executes a successful lateral pass to M. Qongo. (2) M. Qongo attempts an unsuccessful long forward pass to M. Ventura. (3) Receiver is caught offside (implying offside stoppage).",
-      "justification_cot": "Match: both captions include an initial successful lateral pass, followed by a long forward pass attempt. Mismatches: GT specifies the second pass is a completed forward long through ball (successful), while Pred says it is unsuccessful and to a different target. GT includes a duel where S. Anderson is challenged by M. Dobson and Dobson loses possession; Pred replaces this with an offside event and contains no duel/possession-loss action. Pred therefore omits a key GT action (duel/possession change) and hallucinates a different key action/outcome (offside).",
-      "score": 2
+      "gt_analysis": "Sequence of actions: (1) Jon Guridi attempts a forward pass to Luis Hernández; the pass is unsuccessful. (2) Luis Hernández intercepts the ball and performs a recovery via counter-pressing. (3) Rubén Sobrino makes a successful forward pass to A. Lozano. (4) A. Lozano duels with Igor Zubeldía and keeps possession. (5) Igor Zubeldía commits a foul.",
+      "pred_analysis": "Sequence of actions: (1) Iza Carcelén makes a successful header to play the ball forward to Rubén Sobrino. (2) Sobrino duels with Martín Zubimendi and loses possession. (3) Sobrino commits a foul.",
+      "justification_cot": "Matches: Both captions include a forward progression involving Cádiz and a duel, and both mention a foul occurring after the duel phase.\nOmissions (GT actions missing in Pred): Guridi's attempted forward pass and it being unsuccessful; Hernández's interception and counter-press recovery; Sobrino's successful forward pass to A. Lozano; Lozano maintaining possession in a duel; Zubeldía as the fouler.\nContradictions/Hallucinations: Pred introduces a headed forward ball by Iza to Sobrino (not in GT). Pred says Sobrino duels and loses possession, whereas GT says Lozano duels and maintains possession. Pred attributes the foul to Sobrino, while GT attributes it to Zubeldía. Overall, the core action chain is largely different.",
+      "score": 1
     },
     "identity_accuracy": {
-      "gt_analysis": "Entities and roles: C. Buendia (Saint Louis) = lateral passer; C. Vaughn = recipient then through-ball passer; S. Anderson = target of through pass and duel participant; M. Dobson = duels S. Anderson and loses possession. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "pred_analysis": "Entities and roles: M. O'Neill (Creighton) = lateral passer; M. Qongo (Creighton) = recipient then long-pass attempt; M. Ventura (Creighton) = target and offside player. Teams: Creighton Bluejays vs Saint Louis Billikens. Also assigns positions: center-back, left center-back, left wing-back.",
-      "justification_cot": "Teams match the GT. However, all player identities in Pred (O'Neill, Qongo, Ventura) do not appear in GT, and all GT main actors (Buendia, Vaughn, Anderson, Dobson) are missing. Roles are therefore assigned to entirely different (hallucinated/incorrect relative to GT) players, including fabricated positional labels not supported by GT. Only the team context overlaps.",
+      "gt_analysis": "Entities and roles: Jon Guridi (Real Sociedad) passer; Luis Hernández (Cádiz center-back) intended recipient/interceptor and recovery; Rubén Sobrino (Cádiz) passer to A. Lozano; A. Lozano (Cádiz) ball carrier in duel; Igor Zubeldía (Real Sociedad) duelist vs Lozano and fouler (yellow card).",
+      "pred_analysis": "Entities and roles: Iza Carcelén (Cádiz right back) header passer to Sobrino; Rubén Sobrino (Cádiz right winger) duelist vs Martín Zubimendi and later fouler; Martín Zubimendi (Real Sociedad DM) duelist and winner of possession.",
+      "justification_cot": "Matches: Rubén Sobrino is correctly placed as a Cádiz player involved in the play.\nOmissions: Guridi, Luis Hernández, A. Lozano, and Igor Zubeldía are all missing.\nContradictions/Hallucinations: Iza Carcelén and Martín Zubimendi are introduced but are not in GT. Roles are also wrong: in GT Sobrino is a successful passer to Lozano, not the fouler; the duel is Lozano vs Zubeldía (not Sobrino vs Zubimendi); the fouler is Zubeldía (not Sobrino). Major identity/role misassignments dominate.",
       "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcomes/links: Buendia's lateral pass is successful → enables Vaughn to make a completed long through pass → leads to Anderson being in a duel with Dobson → Dobson loses possession in that duel.",
-      "pred_analysis": "Outcomes/links: O'Neill's lateral pass is successful → Qongo's long forward pass is unsuccessful → Ventura is offside (stoppage implied).",
-      "justification_cot": "Pred gets the notion of a successful first pass but contradicts the key GT outcome that the long through pass is completed (Pred says unsuccessful). Pred also introduces offside as the terminal outcome, which is not in GT, and omits the GT's causal ending of a duel leading to Dobson losing possession. The main causal chain in GT (successful through ball leading into duel/possession result) is not preserved.",
+      "gt_analysis": "Outcomes/links: Guridi's forward pass fails because Hernández intercepts (ball recovery). Then Sobrino successfully passes forward to A. Lozano. Lozano keeps the ball despite a duel with Zubeldía. Zubeldía fouls, causing a yellow card.",
+      "pred_analysis": "Outcomes/links: Iza's header successfully reaches Sobrino. Sobrino duels with Zubimendi and loses possession. Then Sobrino commits a foul (no card mentioned).",
+      "justification_cot": "Matches: Both describe a sequence that ends with a foul.\nMajor contradictions: GT's decisive outcomes are (a) interception by Hernández, (b) successful forward pass from Sobrino to Lozano, (c) Lozano keeps possession, (d) Zubeldía fouls and receives a yellow. Pred instead claims (a) successful header to Sobrino, (b) Sobrino loses possession in a duel, (c) Sobrino commits the foul, and it omits the yellow card entirely. The causal chain (who wins/keeps possession and who commits the foul) is fundamentally different.",
       "score": 1
     },
     "spatial_understanding": {
-      "gt_analysis": "Spatial cues: lateral pass (sideways) from Buendia to Vaughn; forward long through pass from Vaughn to Anderson. No explicit field zones given.",
-      "pred_analysis": "Spatial cues: lateral pass; long forward pass; adds positional/zone proxies via roles (center-back, left center-back, left wing-back) and an offside situation.",
-      "justification_cot": "There is partial alignment on directions (lateral then forward long). However, Pred adds specific left-sided positional information and an offside context not present in GT, and the implied spatial setup (backline to wing-back, offside line) is unsupported. With GT lacking explicit zones, Pred's extra spatial specificity functions as hallucinated detail rather than a correct match.",
-      "score": 3
+      "gt_analysis": "Spatial cues: forward pass attempt (Real Sociedad to Cádiz CB area), interception/recovery in counter-pressing context, then a successful forward pass by Cádiz to a teammate, followed by a duel for possession between Lozano and Zubeldía (implied close proximity challenge).",
+      "pred_analysis": "Spatial cues: header used to move the ball forward to Sobrino; duel between Sobrino and Zubimendi; loss of possession; foul afterwards. No explicit field zones.",
+      "justification_cot": "Matches: Both contain a 'forward' progression and a duel for the ball.\nDifferences: Pred's key spatial mechanism is a header forward to Sobrino, which is not in GT. GT's forward pass is Sobrino to Lozano, whereas Pred's is Iza to Sobrino. The duel participants differ, which changes relative positioning/marking relationships. Because the only overlapping spatial element is the generic notion of 'forward' and a duel, spatial alignment is weak.",
+      "score": 2
     },
     "temporal_understanding": {
-      "gt_analysis": "Order: successful lateral pass → successful forward long through pass → duel between Dobson and Anderson → Dobson loses possession.",
-      "pred_analysis": "Order: successful lateral pass → unsuccessful long forward pass → offside call (implied as the consequence of the second action).",
-      "justification_cot": "Pred preserves the high-level early ordering of 'lateral pass then long forward pass.' After that, it diverges: GT continues with a duel and possession outcome, while Pred ends with offside tied to the long pass. So only the initial temporal structure matches; the latter part is replaced.",
-      "score": 3
+      "gt_analysis": "Order: (1) Guridi unsuccessful forward pass attempt → (2) Hernández intercepts/recovery (counter-press) → (3) Sobrino successful forward pass to Lozano → (4) Lozano duels with Zubeldía and keeps possession → (5) Zubeldía foul → (6) yellow card.",
+      "pred_analysis": "Order: (1) Iza header forward to Sobrino → (2) Sobrino duels with Zubimendi and loses possession → (3) Sobrino foul.",
+      "justification_cot": "Matches: Pred preserves a broad high-level pattern of 'forward ball movement → duel → foul'.\nMajor mismatches: The actual GT sequence has an initial failed pass and interception before Cádiz's forward pass, and the foul occurs after Lozano retains possession; also the card follows the foul. Pred omits the interception/recovery and the intermediate successful pass to Lozano, changes who is involved in the duel, and changes who commits the foul. Temporal structure only loosely corresponds at an abstract level.",
+      "score": 2
     },
     "contextual_details": {
-      "gt_analysis": "Context: Match between Creighton Bluejays and Saint Louis Billikens. No set piece mentioned; open play passing sequence leading into a duel/possession contest.",
-      "pred_analysis": "Context: Match between Creighton Bluejays and Saint Louis Billikens. Open play passing with an offside stoppage. Adds player position labels (center-back/LCB/LWB).",
-      "justification_cot": "Teams are correctly stated. But Pred's play context differs materially: it frames the sequence as Creighton defenders/build-up leading to an offside, whereas GT is a Saint Louis passing sequence into a duel where Dobson loses possession. The added positional/tactical context is unsupported by GT and the offside context is incorrect.",
+      "gt_analysis": "Context: Teams Real Sociedad vs Cádiz. Counter-pressing recovery noted. Specific players: Guridi, Luis Hernández (Cádiz CB), Sobrino, A. Lozano, Igor Zubeldía. Disciplinary outcome: yellow card to Zubeldía.",
+      "pred_analysis": "Context: Teams Cádiz vs Real Sociedad implied. Positions provided (Iza right back, Sobrino right winger, Zubimendi defensive midfielder). No mention of counter-pressing. No yellow card mentioned.",
+      "justification_cot": "Matches: Correct team context at a broad level (Cádiz and Real Sociedad involved) and includes Sobrino.\nErrors/omissions: Counter-pressing context is missing; the key disciplinary context (yellow card) is missing; most key players are wrong or absent; Pred adds positional details and a headed action not supported by GT. Context is therefore only minimally aligned.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Core event: Saint Louis (Buendia → Vaughn) combine with a successful long through ball to Anderson, followed by a duel where Dobson loses possession; teams are Creighton vs Saint Louis.",
-      "pred_analysis": "Core event: Creighton (O'Neill → Qongo) make a successful lateral pass then an unsuccessful long ball to Ventura ending in offside; teams are Creighton vs Saint Louis.",
-      "justification_cot": "While the teams match and there is superficial overlap in having 'lateral pass then long forward pass,' Pred contains multiple Major Errors: wrong main players/roles throughout, wrong success vs failure of the long pass, replaces the GT duel/possession-loss ending with an offside outcome, and shifts the apparent team in possession/action ownership. These errors make the caption unreliable and misleading relative to the GT (critical mismatch in the play's outcome/continuation).",
+      "gt_analysis": "Main story: Real Sociedad's Guridi misplaces a forward pass; Cádiz's Luis Hernández intercepts and recovers; Cádiz plays forward via Sobrino to Lozano; Lozano keeps possession in a duel with Zubeldía; Zubeldía fouls and gets a yellow card.",
+      "pred_analysis": "Main story: Iza heads forward successfully to Sobrino; Sobrino duels Zubimendi, loses the ball; Sobrino commits a foul.",
+      "justification_cot": "The generated caption shares only superficial overlap (same match participants at team level and Sobrino appearing, plus generic elements like a forward action/duel/foul). It contains multiple Major Errors: wrong primary actors (Iza/Zubimendi added; Guridi/Hernández/Lozano/Zubeldía missing), wrong key actions (header vs failed pass/interception; wrong passer/receiver), wrong possession outcome (Lozano keeps ball vs Sobrino loses it), wrong fouler, and it omits the yellow card (an important outcome). Despite mentioning a foul, the overall description is misleading and not reliably usable.",
       "score": 2
     },
+    "cost": 0.0272328,
+    "data_source": "1284287402",
     "video": "/mnt/sun/shared/datasets/sports_dataset/soccer/LaLiga/2021-2022/395114/infraction_1284287402.mp4",
     "ground_truth": "Jon Guridi of Real Sociedad attempted an unsuccessful forward pass to Luis Hernández, who plays as a center-back for Cádiz. Luis Hernández intercepted the ball and executed a recovery in counter-pressing. Rubén Sobrino of Cádiz then made a successful forward pass to A. Lozano. A. Lozano engaged in a duel with Igor Zubeldía, maintaining possession. Igor Zubeldía of Real Sociedad committed a foul, resulting in a yellow card.",
     "prediction": "Iza Carcelén, the right back for Cádiz, executed a successful header to move the ball forward to Rubén Sobrino, the right winger. Sobrino then engaged in a duel with Martín Zubimendi, the defensive midfielder for Real Sociedad, but lost possession. Following this, Sobrino committed a foul.",
     "id": 45,
     "sport": "soccer",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 348
   },
   {
@@ -214,106 +218,110 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Sequence of actions: (1) C. Buendia executes a successful lateral pass to C. Vaughn. (2) C. Vaughn completes a forward long through pass to S. Anderson. (3) M. Dobson engages in a duel with S. Anderson and loses possession (i.e., S. Anderson wins/keeps it).",
-      "pred_analysis": "Sequence of actions: (1) M. O'Neill executes a successful lateral pass to M. Qongo. (2) M. Qongo attempts an unsuccessful long forward pass to M. Ventura. (3) Receiver is caught offside (implying stoppage).",
-      "justification_cot": "Match: both captions include an initial successful lateral pass followed by a long forward pass attempt/action. Omissions/contradictions: GT specifies the long forward pass is a completed through ball to S. Anderson, while Pred says the long forward pass is unsuccessful and linked to offside, and targets a different player. GT includes a duel where M. Dobson loses possession to/against S. Anderson; Pred replaces this with an offside event and includes no duel/possession-loss action. Pred also adds positional labels (center-back, wing-back) not present in GT. Overall, the action structure only weakly overlaps at a generic level, with major mismatches in the key second and third actions.",
-      "score": 2
+      "gt_analysis": "Actions in order: (1) N. Gulden (Lipscomb) takes a corner kick. (2) W. Turner (Lipscomb) attempts a header and it is unsuccessful; the ball is directed forward to M. Brozovich. (3) M. Brozovich (Bellarmine) comes out as goalkeeper (goalkeeper exit) and enters a duel, then loses possession.",
+      "pred_analysis": "Actions: (1) T. Spicer (Lipscomb) executes a free kick cross. (2) N. Dang (Lipscomb) is caught offside.",
+      "justification_cot": "Match: both describe a set-piece ball being delivered by Lipscomb against Bellarmine at a very high level. Omissions: Pred misses the corner kick specifically, the header attempt by W. Turner, the ball going to M. Brozovich, and the goalkeeper exit/duel/loss of possession. Contradictions/hallucinations: Pred changes the main set piece from a corner kick to a free-kick cross and adds an offside call, neither of which appears in GT. Overall, the core action sequence is largely incorrect and replaced with different events.",
+      "score": 1
     },
     "identity_accuracy": {
-      "gt_analysis": "Entities/roles: C. Buendia (Saint Louis) = lateral passer; C. Vaughn = receiver then long through passer; S. Anderson = target of through pass and duel participant; M. Dobson = duel participant who loses possession. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "pred_analysis": "Entities/roles: M. O'Neill (Creighton) = lateral passer; M. Qongo = receiver then long-pass attempter; M. Ventura = intended receiver and is offside. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "justification_cot": "Match: teams are correctly identified as Creighton vs Saint Louis. Contradictions/hallucinations: all player identities and assigned roles in Pred (O'Neill, Qongo, Ventura, plus their positions) are not in GT; and all GT players (Buendia, Vaughn, Anderson, Dobson) are missing from Pred. Also, the main actors are entirely different, so role assignments do not align.",
+      "gt_analysis": "Entities/roles: N. Gulden (Lipscomb) = corner-kick taker; W. Turner (Lipscomb) = header attempt; M. Brozovich (Bellarmine) = goalkeeper who comes out and duels/loses possession. Teams: Lipscomb Bisons vs Bellarmine Knights.",
+      "pred_analysis": "Entities/roles: T. Spicer (Lipscomb) = free-kick crosser; N. Dang (Lipscomb) = offside player; mentions opponent Bellarmine Knights.",
+      "justification_cot": "Match: teams mentioned (Lipscomb Bisons and Bellarmine Knights) align with GT. Errors/hallucinations: Pred uses completely different players (T. Spicer, N. Dang) who are not in GT, and does not mention the key GT players (N. Gulden, W. Turner, M. Brozovich). Roles are therefore misassigned relative to GT (set-piece taker and key contest involve different people).",
       "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcomes/links: Buendia lateral pass is successful → enables Vaughn possession; Vaughn long through pass is completed to Anderson → leads to Dobson vs Anderson duel; Dobson loses possession in that duel (Anderson effectively wins/retains).",
-      "pred_analysis": "Outcomes/links: O'Neill lateral pass is successful → Qongo receives; Qongo long forward pass is unsuccessful → Ventura is offside (stoppage implied).",
-      "justification_cot": "Match: first pass outcome is successful in both. Major contradictions: GT’s key outcome is a completed through pass to Anderson and then a duel where Dobson loses possession; Pred’s key outcome is an unsuccessful long pass due to an offside call involving Ventura, which is not in GT. Pred therefore changes both the success of the decisive pass and the resulting event (offside vs duel/possession loss).",
-      "score": 1
+      "gt_analysis": "Outcomes/links: Corner kick leads to an unsuccessful header attempt by W. Turner; ball goes forward to M. Brozovich; Brozovich comes out, duels, and loses possession.",
+      "pred_analysis": "Outcomes/links: Free kick cross occurs; N. Dang is offside (implying stoppage/infraction). No mention of header, goalkeeper exit, duel, or possession loss.",
+      "justification_cot": "Contradictions: Pred introduces an offside outcome that is not in GT and removes GT’s key outcomes (unsuccessful header, ball to Brozovich, goalkeeper exit/duel, loss of possession). Causal chain in Pred (cross → offside) does not match GT’s chain (corner → header attempt fails → ball to GK/duel → possession lost).",
+      "score": 0
     },
     "spatial_understanding": {
-      "gt_analysis": "Spatial cues: lateral pass (sideways); then forward long through pass (forward/penetrative). No explicit field zones or sides; duel occurs after the through pass between Dobson and Anderson.",
-      "pred_analysis": "Spatial cues: lateral pass; long forward pass; adds positional/role locations (center-back, left center-back, left wing-back) and implies offside positioning.",
-      "justification_cot": "Match: lateral (sideways) then long forward direction matches at a coarse level. Errors/hallucinations: Pred introduces specific positional/side information (center-back/left center-back/left wing-back) and offside positioning not supported by GT. GT provides no left/right or defensive-line role details, so Pred’s spatial specificity is largely fabricated. Still, the basic directional notions (lateral then forward) align.",
-      "score": 2
+      "gt_analysis": "Spatial cues: corner kick (from the corner area); header directs ball forward; goalkeeper exits his goal area to engage in a duel.",
+      "pred_analysis": "Spatial cues: free kick cross (location unspecified); offside event; player positions/roles: left attacking midfielder, right center back.",
+      "justification_cot": "Match: both imply a crossing delivery into the area, but GT is explicit about a corner kick while Pred calls it a free kick. Pred adds formation/position labels not in GT. GT’s key spatial element of a goalkeeper coming out is omitted. Overall spatial specificity is mostly wrong due to the set-piece location mismatch and missing GK-exit positioning.",
+      "score": 1
     },
     "temporal_understanding": {
-      "gt_analysis": "Order: successful lateral pass (Buendia→Vaughn) → completed long through pass (Vaughn→Anderson) → duel (Dobson vs Anderson) resulting in Dobson losing possession.",
-      "pred_analysis": "Order: successful lateral pass (O'Neill→Qongo) → attempted long forward pass (Qongo→Ventura) → offside outcome/stoppage.",
-      "justification_cot": "Match: Pred preserves the high-level sequence of 'lateral pass then long forward pass' occurring next. Major mismatch: the third event is different (GT duel/possession change vs Pred offside), so the temporal structure diverges after the second step. Additionally, GT’s second event is a completed through pass, while Pred frames it as unsuccessful, altering how the sequence progresses.",
-      "score": 3
+      "gt_analysis": "Sequence: corner kick → header attempt (unsuccessful) and ball goes forward → goalkeeper exits and duels → goalkeeper loses possession.",
+      "pred_analysis": "Sequence: free kick cross → offside call (no further sequence).",
+      "justification_cot": "Pred does not preserve GT’s multi-step sequence and replaces it with a different two-step sequence. The ordering of GT’s key events (header then GK exit/duel) is entirely missing, so temporal alignment is largely absent.",
+      "score": 1
     },
     "contextual_details": {
-      "gt_analysis": "Context: Teams are Creighton Bluejays and Saint Louis Billikens. Open-play passing sequence leading into a duel/possession contest; no set-piece indicated.",
-      "pred_analysis": "Context: Teams are Creighton Bluejays and Saint Louis Billikens. Mentions defensive positions (center-back structure) and an offside call.",
-      "justification_cot": "Match: teams are correct. Errors: Pred adds tactical/positional context (specific backline roles) and an offside situation not present in GT, and omits the GT’s duel context. So while the match context (teams) is right, the play type/game situation details are largely wrong.",
-      "score": 3
-    },
-    "final_holistic_score": {
-      "gt_analysis": "Main idea: Saint Louis player Buendia laterally passes to Vaughn; Vaughn plays a successful long through ball to Anderson; then Anderson and Dobson duel and Dobson loses possession; match is Creighton vs Saint Louis.",
-      "pred_analysis": "Main idea: Creighton center-back O'Neill laterally passes to Qongo; Qongo plays an unsuccessful long forward pass toward Ventura who is offside; match is Creighton vs Saint Louis.",
-      "justification_cot": "The only strong correct element is the competing teams. The event description contains multiple major errors: wrong primary players/roles throughout, wrong outcome for the long forward pass (successful through ball vs unsuccessful/offside), and wrong terminal event (duel/possession loss vs offside). These are not minor specificity issues; they fundamentally change what happened in the play. With three+ major errors and a critical outcome mismatch, the caption is overall misleading despite having the correct teams.",
+      "gt_analysis": "Context: soccer play involving a corner kick for Lipscomb; opponent Bellarmine; ensuing aerial attempt and goalkeeper action; teams explicitly Bellarmine Knights vs Lipscomb Bisons.",
+      "pred_analysis": "Context: match against Bellarmine Knights; Lipscomb players described with specific positions (LAM, RCB); free kick cross; offside.",
+      "justification_cot": "Match: correct teams (Bellarmine Knights and Lipscomb Bisons). Errors: play context is wrong (free kick + offside) versus GT (corner + header + GK exit/duel/possession loss). Pred’s added positional details are not supported by GT (hallucinated context).",
       "score": 2
     },
+    "final_holistic_score": {
+      "gt_analysis": "Main event is a Lipscomb corner kick leading to an unsuccessful header, then Bellarmine goalkeeper Brozovich comes out, duels, and loses possession; teams are Lipscomb vs Bellarmine.",
+      "pred_analysis": "Describes a Lipscomb free kick cross and an offside involving different players; correct opponent team mentioned.",
+      "justification_cot": "The caption retains only the broad matchup context (Lipscomb vs Bellarmine). It contains multiple Major Errors: wrong primary set piece (free kick vs corner), wrong/unsupported outcome (offside), wrong identities (Spicer/Dang vs Gulden/Turner/Brozovich), and it omits the key header and goalkeeper-duel sequence. While not explicitly stating a made/missed scoring outcome, it fundamentally misrepresents the described play with mostly hallucinated details. Overall utility is very low.",
+      "score": 1
+    },
+    "cost": 0.01985655,
+    "data_source": "1454881441",
     "video": "/mnt/sun/shared/datasets/sports_dataset/soccer/talent_scout/non-talents/408923/corner_1454881441.mp4",
     "ground_truth": "N. Gulden of Lipscomb Bisons executed a corner kick. W. Turner of Lipscomb Bisons attempted an unsuccessful header, directing the ball forward to M. Brozovich. M. Brozovich of Bellarmine Knights initiated a goalkeeper exit and engaged in a duel, ultimately losing possession. The teams playing are Bellarmine Knights and Lipscomb Bisons.",
     "prediction": "T. Spicer, playing as a left attacking midfielder for the Lipscomb Bisons, executed a free kick cross while N. Dang, positioned as a right center back for the Lipscomb Bisons, was caught offside in the match against the Bellarmine Knights.",
     "id": 43,
     "sport": "soccer",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 714
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Sequence of actions: (1) C. Buendia executes a successful lateral pass to C. Vaughn. (2) C. Vaughn completes a forward long through pass to S. Anderson. (3) M. Dobson engages in a duel with S. Anderson and S. Anderson loses possession (Dobson wins it).",
-      "pred_analysis": "Sequence of actions: (1) M. O'Neill executes a successful lateral pass to M. Qongo. (2) M. Qongo attempts an unsuccessful long forward pass to M. Ventura. (3) The receiver is caught offside.",
-      "justification_cot": "Match: both captions include a successful lateral pass followed by an attempted/played long forward pass. Omissions/contradictions: GT specifies the second pass is a completed forward long through ball to S. Anderson, while Pred says the long forward pass is unsuccessful and leads to offside. GT then includes a duel where Dobson wins possession from Anderson; Pred replaces this with an offside event and contains no duel/possession-loss action. Pred also adds specific defender-position actions not present in GT. Overall, only a vague structural similarity (lateral pass then long pass) aligns; key action details and the third event differ.",
-      "score": 2
+      "gt_analysis": "Sequence of actions: (1) B. Johnson delivers a corner kick for Saint Louis. (2) M. O'Neill (Creighton) clears the corner kick. (3) Clearance results in Saint Louis losing possession.",
+      "pred_analysis": "Sequence of actions: (1) O. O'Malley (Creighton) executes a corner kick. (2) M. Ventura duels with C. Niece and loses possession. (3) C. Niece then faces off vs M. Ventura and also loses possession.",
+      "justification_cot": "Match: both captions involve a corner kick and a resulting loss of possession. Omissions: Pred does not include a clearance action at all, which is the key defensive action in GT. Contradictions: Pred assigns the corner kick to Creighton (GT: Saint Louis) and replaces the simple 'corner kick → cleared' sequence with two separate duels/face-offs and two possessions lost, which are not in GT. Hallucinations: the duel(s), face-off, and repeated loss of possession events are invented relative to GT.",
+      "score": 1
     },
     "identity_accuracy": {
-      "gt_analysis": "Entities and roles: C. Buendia (Saint Louis) = lateral passer; C. Vaughn = receiver then through-passer; S. Anderson = target of through pass and duel participant; M. Dobson = duel participant who wins possession. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "pred_analysis": "Entities and roles: M. O'Neill (Creighton) = lateral passer; M. Qongo (Creighton) = receiver then long-pass attempter; M. Ventura = intended receiver (offside). Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "justification_cot": "Match: the competing teams are correctly stated in Pred. Contradictions/hallucinations: all player identities in Pred (O'Neill, Qongo, Ventura) do not appear in GT, and all GT main actors (Buendia, Vaughn, Anderson, Dobson) are missing from Pred. Roles are therefore entirely misassigned relative to GT (wrong passer/receiver/shooter-equivalents).",
+      "gt_analysis": "Entities/roles: B. Johnson (Saint Louis Billikens) = corner-kick taker; M. O'Neill (Creighton Bluejays) = player who clears; teams: Saint Louis vs Creighton.",
+      "pred_analysis": "Entities/roles: O. O'Malley (Creighton) = corner-kick taker; M. Ventura (Creighton) = dueling player losing possession; C. Niece (Saint Louis) = dueling player, later also loses possession; teams: Saint Louis vs Creighton.",
+      "justification_cot": "Match: teams (Creighton Bluejays, Saint Louis Billikens) are consistent. Contradictions: the primary actor roles are wrong—corner kick is attributed to O. O'Malley/Creighton instead of B. Johnson/Saint Louis; the crucial clearer M. O'Neill is missing. Hallucinations: O. O'Malley, M. Ventura, and C. Niece (and their positional titles) are introduced without support from GT, and their roles (duel/possession losses) do not correspond to GT.",
       "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcomes/causality: Buendia's lateral pass is successful → enables Vaughn to play a completed long through pass forward to Anderson → then Anderson enters a duel with Dobson and loses possession (Dobson wins the ball).",
-      "pred_analysis": "Outcomes/causality: O'Neill's lateral pass is successful → Qongo's long forward pass attempt is unsuccessful because the target (Ventura) is offside.",
-      "justification_cot": "Match: first pass outcome (successful) and causal chaining (pass leads to next pass) is present. Major contradictions: GT's second pass is completed to Anderson, whereas Pred's second pass is unsuccessful due to offside to Ventura. GT's key final outcome is a duel causing Anderson to lose possession; Pred replaces the final outcome with an offside stoppage and no possession-duel result. Pred introduces an offside outcome not in GT.",
+      "gt_analysis": "Outcome/cause: Johnson's corner is cleared by O'Neill, and this clearance causes Saint Louis to lose possession.",
+      "pred_analysis": "Outcome/cause: After a Creighton corner kick, Ventura loses possession in a duel with Niece; then Niece faces off with Ventura and also loses possession (two separate possession-loss outcomes).",
+      "justification_cot": "Match: there is a stated loss of possession. Critical contradiction in causality: GT loss of possession is caused by a clearance by O'Neill on a Saint Louis corner; Pred instead attributes possession losses to duels between Ventura and Niece, with no clearance and the corner taken by the wrong team. Pred also adds an extra second possession loss not present in GT, creating incorrect outcomes and causal links.",
       "score": 1
     },
     "spatial_understanding": {
-      "gt_analysis": "Spatial cues: 'lateral pass' (sideways) then 'forward long through pass' (forward, long, through ball). No field zones/positions specified beyond these directions.",
-      "pred_analysis": "Spatial cues: 'lateral pass' then 'long forward pass'; additionally specifies positions (center-back to left center-back to left wing-back).",
-      "justification_cot": "Match: general directionality aligns on lateral then forward-long. Errors/hallucinations: Pred's added positional lanes (center-back/left center-back/left wing-back) are not supported by GT, and the GT's 'through pass' attribute is missing. Because GT provides limited spatial detail, Pred partially matches the direction cues but adds unsupported specifics.",
-      "score": 3
+      "gt_analysis": "Spatial facts: the corner kick is specifically from the corner (implicitly corner area); no other field zones/directions given; clearance occurs on that corner delivery.",
+      "pred_analysis": "Spatial facts: includes positional labels (left back, left center back) but does not specify 'corner' location beyond the generic corner kick; no mention of being cleared; no corner-side detail (e.g., left/right corner) provided.",
+      "justification_cot": "Match: both reference a corner kick (implying a corner location). Omissions: Pred misses the key spatial interaction of the corner delivery being cleared. Hallucinations/irrelevance: 'left back/left center back' position descriptors are not supported by GT and do not accurately substitute for the GT's spatially relevant event (a clearance of the corner). Because the only concrete GT spatial cue is 'corner kick' and Pred at least includes that, it gets limited credit.",
+      "score": 2
     },
     "temporal_understanding": {
-      "gt_analysis": "Order: (1) successful lateral pass Buendia→Vaughn, (2) completed long through pass Vaughn→Anderson, (3) duel Dobson vs Anderson resulting in Anderson losing possession.",
-      "pred_analysis": "Order: (1) successful lateral pass O'Neill→Qongo, (2) unsuccessful long forward pass Qongo→Ventura, (3) offside called on Ventura.",
-      "justification_cot": "Match: both keep a two-pass sequence first (lateral pass then long forward pass). Major mismatch: GT's third event is a duel and dispossession after the completed through pass, while Pred's third event is an offside outcome tied to the second pass. Thus the overall temporal skeleton partially aligns early but diverges on the key final phase and its relation to the second pass.",
-      "score": 3
+      "gt_analysis": "Order: corner kick delivered → cleared by defender → possession lost (single continuous sequence).",
+      "pred_analysis": "Order: corner kick executed → duel where Ventura loses possession → subsequent face-off where Niece loses possession (two sequential possession changes).",
+      "justification_cot": "Partial match: both start with a corner kick and then describe a possession loss after it. Major mismatch: GT has an immediate clearance as the key intermediate event; Pred replaces it with two sequential duels and an additional later possession loss, changing the number of events and the progression. The overall temporal structure is therefore only loosely aligned (corner kick first, then something leading to possession loss).",
+      "score": 2
     },
     "contextual_details": {
-      "gt_analysis": "Context: teams are Creighton Bluejays vs Saint Louis Billikens; open-play passing sequence leading into a duel/turnover. No set-piece indicated.",
-      "pred_analysis": "Context: teams are Creighton Bluejays vs Saint Louis Billikens; describes a backline passing move and an offside situation.",
-      "justification_cot": "Match: teams are correct. Errors: Pred frames the play as specific defensive-position exchanges and an offside trap, while GT context centers on Saint Louis players executing a pass sequence ending in a duel and loss of possession. Pred's offside context is not in GT; GT's duel/turnover context is omitted.",
+      "gt_analysis": "Context: soccer play involving Saint Louis Billikens vs Creighton Bluejays; set piece is a corner kick taken by Saint Louis; defensive clearance by Creighton; possession lost as a result.",
+      "pred_analysis": "Context: Saint Louis vs Creighton; claims player positions (left back/left center back); corner kick taken by Creighton; includes duels/face-offs and alternating possession losses.",
+      "justification_cot": "Match: correct teams and that a corner kick occurs. Major context error: which team takes the corner is wrong (GT: Saint Louis; Pred: Creighton). Omissions: no mention of the clearance and the specific clearer (O'Neill). Hallucinations: detailed positional roles and duel narrative not present in GT.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Key content: Saint Louis (Buendia→Vaughn) successful lateral pass; Vaughn→Anderson completed long through pass; Dobson duels Anderson and wins possession; match is Creighton vs Saint Louis.",
-      "pred_analysis": "Key content: Creighton (O'Neill→Qongo) successful lateral pass; Qongo unsuccessful long forward pass to Ventura; offside on Ventura; match is Creighton vs Saint Louis.",
-      "justification_cot": "The only solid overlap is the team matchup and a very generic pattern of 'lateral pass then long forward pass.' Pred contains multiple Major Errors: wrong players/roles throughout, wrong outcome of the long pass (unsuccessful/offside vs completed through ball), and replaces the GT's main terminal event (duel and dispossession) with an offside. These issues make the caption unreliable and misleading relative to the GT, though not entirely unrelated due to the shared two-pass structure and correct teams.",
+      "gt_analysis": "Main event is: Saint Louis (B. Johnson) takes a corner; Creighton (M. O'Neill) clears; Saint Louis loses possession.",
+      "pred_analysis": "Main event described as: Creighton (O. O'Malley) takes a corner; then two duels between Ventura and Niece with two possession losses.",
+      "justification_cot": "The caption is not reliably describing the same play. It contains multiple Major Errors: wrong corner-kick taker/team, missing the defining clearance by M. O'Neill, and inventing a duel/face-off sequence with extra possession changes. While it correctly names the two teams and mentions a corner kick and possession loss, the primary identities, actions, and causality do not match GT. Overall utility is poor and misleading, but it is at least thematically related (same teams, set piece).",
       "score": 2
     },
+    "cost": 0.0210518,
+    "data_source": "1009610301",
     "video": "/mnt/sun/shared/datasets/sports_dataset/soccer/talent_scout/non-talents/541102/corner_1009610301.mp4",
     "ground_truth": "B. Johnson of Saint Louis Billikens delivered a corner kick that was cleared by M. O'Neill of Creighton Bluejays, resulting in a loss of possession.",
     "prediction": "O. O'Malley, the left back for the Creighton Bluejays, executed a corner kick. M. Ventura, the left center back, engaged in a duel with C. Niece, the left center back for the Saint Louis Billikens, but lost possession. C. Niece then faced off against M. Ventura and also lost possession.",
     "id": 42,
     "sport": "soccer",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 163
   },
   {
@@ -750,54 +758,56 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Sequence of actions: (1) C. Buendia executes a successful lateral pass to C. Vaughn. (2) C. Vaughn completes a forward long through pass to S. Anderson. (3) M. Dobson engages in a duel with S. Anderson and loses possession (i.e., S. Anderson wins the duel/keeps or gains the ball).",
-      "pred_analysis": "Sequence of actions: (1) M. O'Neill executes a successful lateral pass to M. Qongo. (2) M. Qongo attempts an unsuccessful long forward pass to M. Ventura. (3) Receiver is offside (implying the pass results in an offside stoppage rather than a completed through ball).",
-      "justification_cot": "Match: both describe a successful lateral pass followed by a long forward pass attempt. Mismatches: GT’s second action is a completed forward long through pass (successful) to S. Anderson, while Pred says the long forward pass is unsuccessful and to a different player. GT includes a duel where Dobson loses possession to Anderson; Pred replaces this with an offside outcome and contains no duel. Pred therefore omits a key GT action (duel/possession change) and hallucinates offside and different pass target.",
+      "gt_analysis": "Sequence of actions: (1) Douglas Luiz (Aston Villa) delivers a free kick as an assist. (2) Lyanco (Southampton) gets a touch on the ball. (3) Ollie Watkins (Aston Villa) heads the ball toward goal.",
+      "pred_analysis": "Sequence of actions: (1) J. McGinn (Aston Villa) executes a free kick. (2) E. Konsa attempts a header toward goal area. (3) Header is off target and goes out of play.",
+      "justification_cot": "Matches: both describe a free kick followed by a header attempt. Omissions: Pred misses the key intermediate touch by Lyanco. Contradictions: Pred assigns the free kick taker and header attacker to different players than GT (McGinn vs Douglas Luiz; Konsa vs Watkins). Pred also changes the action result to an off-target header rather than a scoring header. Hallucinations: off-target/out of play outcome and Konsa as the header attempt are not in GT.",
       "score": 1
     },
     "identity_accuracy": {
-      "gt_analysis": "Entities/roles: C. Buendia (Saint Louis) = lateral passer; C. Vaughn = lateral receiver then through-ball passer; S. Anderson = target of through pass and duel participant (wins/benefits as Dobson loses possession); M. Dobson = duels with Anderson and loses possession. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "pred_analysis": "Entities/roles: M. O'Neill (Creighton) = lateral passer; M. Qongo (Creighton) = lateral receiver then long-pass passer; M. Ventura (Creighton) = intended receiver/offside. Teams: Creighton Bluejays vs Saint Louis Billikens.",
-      "justification_cot": "Teams match (Creighton vs Saint Louis). All player identities/roles in Pred are different from GT: Buendia/Vaughn/Anderson/Dobson are not mentioned, and O'Neill/Qongo/Ventura are not in GT. Additionally, GT’s main actions are initiated by Saint Louis players, whereas Pred attributes the main buildup to Creighton defenders. This is a major identity and role misassignment across the whole play.",
+      "gt_analysis": "Entities/roles: Douglas Luiz (Aston Villa) = free kick assister; Lyanco (Southampton) = touches the free kick delivery; Ollie Watkins (Aston Villa) = goal scorer via header; Gavin Bazunu (Southampton goalkeeper) = conceded the goal. Teams: Aston Villa vs Southampton.",
+      "pred_analysis": "Entities/roles: J. McGinn (Aston Villa) = free kick taker; E. Konsa (Aston Villa) = header attempt; no defender mentioned; no goalkeeper named. Teams: Aston Villa vs Southampton.",
+      "justification_cot": "Matches: correct teams (Aston Villa and Southampton). Contradictions: primary actors are misidentified—McGinn replaces Douglas Luiz, and Konsa replaces Watkins. Omissions: Lyanco and goalkeeper Gavin Bazunu are missing. Hallucinations: Konsa being the header attacker is unsupported by GT.",
       "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcomes/links: lateral pass is successful (Buendia→Vaughn) enabling Vaughn’s successful long through pass to Anderson; then a duel occurs (Dobson vs Anderson) where Dobson loses possession (implying Anderson/attacking side comes away with the ball).",
-      "pred_analysis": "Outcomes/links: lateral pass is successful (O'Neill→Qongo) leading to a long forward pass attempt that is unsuccessful because the intended receiver (Ventura) is offside (stoppage due to offside).",
-      "justification_cot": "Only the first causal link (successful lateral pass leading into the next action) loosely aligns. Pred contradicts GT on the key outcome of the long ball (GT successful through pass; Pred unsuccessful due to offside) and entirely replaces the GT’s duel/possession-loss outcome with an offside stoppage. This is a major contradiction of the main outcomes after the first pass.",
-      "score": 1
+      "gt_analysis": "Outcomes/links: Douglas Luiz's free kick results in an assist sequence; Lyanco touches the ball; Watkins' header goes into the bottom right corner for a goal; Gavin Bazunu is the goalkeeper scored against.",
+      "pred_analysis": "Outcomes/links: McGinn's free kick leads to Konsa header attempt; header is off target to the outer top right and goes out of play (no goal).",
+      "justification_cot": "Critical contradiction: GT outcome is a scored goal; Pred outcome is a missed header out of play. Causal chain is also wrong: GT includes a deflection/touch by Lyanco and a successful finishing header by Watkins, while Pred removes the touch and replaces the finisher and result. Therefore the main result and its causal attribution are incorrect.",
+      "score": 0
     },
     "spatial_understanding": {
-      "gt_analysis": "Spatial cues: lateral pass (sideways movement); then forward long through pass (progressing upfield through the defense). No specific flank/zone named.",
-      "pred_analysis": "Spatial cues: lateral pass; long forward pass; additionally assigns positions (center-back, left center-back, left wing-back) implying action on/through the left side and deeper defensive line roles.",
-      "justification_cot": "General spatial directions (lateral then forward long) match at a high level. However, Pred adds specific left-side/defensive-line positional context that is not present in GT (potential hallucinated spatial/positional detail). Since GT doesn’t specify left side or roles, those added specifics cannot be verified and likely mislead relative positioning.",
-      "score": 3
+      "gt_analysis": "Spatial details: Watkins heads the ball into the bottom right corner of the goal; shot is on target and into the net. No specific free kick location provided.",
+      "pred_analysis": "Spatial details: header directed toward the outer top right; off target and goes out of play.",
+      "justification_cot": "Contradiction: GT specifies bottom right corner and a goal; Pred specifies outer top right and off target/out of play. The only partial overlap is that both mention the right side, but the specific location and on/off target status are wrong.",
+      "score": 1
     },
     "temporal_understanding": {
-      "gt_analysis": "Order: successful lateral pass → successful long through pass forward → duel occurs → Dobson loses possession.",
-      "pred_analysis": "Order: successful lateral pass → long forward pass attempt → offside outcome (no duel afterwards).",
-      "justification_cot": "Pred preserves the first two-step structure (lateral pass then long forward pass) in the same order, but diverges afterward by replacing the later duel/possession event with an offside stoppage and ending the sequence there. So the initial ordering aligns, but the latter part is missing/altered.",
+      "gt_analysis": "Order: free kick delivery by Douglas Luiz → touch by Lyanco → Watkins header → goal scored (against Bazunu).",
+      "pred_analysis": "Order: free kick by McGinn → header attempt by Konsa → ball goes out of play.",
+      "justification_cot": "Partial match: free kick precedes header. Major issues: Pred omits the intermediate Lyanco touch and replaces the final event (goal) with an out-of-play miss. The broad ordering of two events is similar, but the GT has an additional event and different endpoint.",
       "score": 3
     },
     "contextual_details": {
-      "gt_analysis": "Context: Match is Creighton Bluejays vs Saint Louis Billikens. Play context includes open-play passing sequence and a duel where possession is lost by Dobson.",
-      "pred_analysis": "Context: Match is Creighton Bluejays vs Saint Louis Billikens. Mentions specific player roles/positions (center-back, left center-back, left wing-back) and an offside event.",
-      "justification_cot": "Teams are correctly stated. However, Pred’s play context differs materially: it frames the action as Creighton defenders building out and ending in offside, while GT frames Saint Louis executing passes leading into a duel where Dobson loses possession. Offside and the defensive-role details are unsupported by GT and conflict with the described flow of play.",
+      "gt_analysis": "Context: Set piece (free kick) producing an assist and a headed goal. Teams: Aston Villa vs Southampton. Goal scored against goalkeeper Gavin Bazunu.",
+      "pred_analysis": "Context: Set piece (free kick) leading to a headed attempt that misses. Teams: Aston Villa vs Southampton. No goalkeeper mentioned.",
+      "justification_cot": "Matches: correct teams; recognizes a free-kick set-piece context. Contradictions: Pred describes a missed chance rather than an assisted headed goal. Omissions: goalkeeper Bazunu and the deflection/touch by Lyanco are missing, and the assist context is not preserved correctly.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Core event: Saint Louis player Buendia laterally passes to Vaughn; Vaughn plays a successful long through ball to Anderson; Anderson engages in a duel with Dobson and Dobson loses possession. Teams: Creighton vs Saint Louis.",
-      "pred_analysis": "Core event: Creighton center-backs exchange a lateral pass; then an unsuccessful long forward pass to a wing-back with offside. Teams: Creighton vs Saint Louis.",
-      "justification_cot": "Although the teams match and the broad pattern 'lateral pass then long forward pass' overlaps, Pred contains multiple major factual contradictions/hallucinations: wrong main players and roles (entire cast differs), wrong team initiating the key actions (Creighton vs Saint Louis), wrong outcome of the long pass (successful through ball vs unsuccessful/offside), and it omits/contradicts the duel and possession-loss outcome which is central in GT. This amounts to several major errors and a critical misrepresentation of the play’s outcome after the second pass.",
-      "score": 2
+      "gt_analysis": "Main event: Douglas Luiz free kick assist sequence with Lyanco touch; Ollie Watkins heads in a goal to the bottom right past Gavin Bazunu; Aston Villa vs Southampton.",
+      "pred_analysis": "Main event described: McGinn free kick; Konsa header misses to outer top right and goes out; Aston Villa vs Southampton.",
+      "justification_cot": "The caption contains a Critical Error by flipping the outcome (GT is a scored goal; Pred is a miss/out of play). It also includes multiple Major Errors: wrong free-kick taker, wrong header attacker, wrong shot placement (bottom-right goal vs outer top-right miss), and missing/incorrect causal elements (Lyanco touch, Bazunu). Only the teams and the general notion of free kick → header align. Overall reliability is very poor.",
+      "score": 1
     },
+    "cost": 0.0183393,
+    "data_source": "1521843549",
     "video": "/mnt/sun/shared/datasets/sports_dataset/soccer/EPL/2022-2023/301047/shot_1521843549.mp4",
     "ground_truth": "Douglas Luiz of Aston Villa delivered a precise free kick assist, which was touched by Lyanco of Southampton. Ollie Watkins of Aston Villa then headed the ball into the bottom right corner of the goal, scoring against goalkeeper Gavin Bazunu. The teams in action are Aston Villa and Southampton.",
     "prediction": "J. McGinn of Aston Villa executed a free kick, and E. Konsa attempted a header towards the outer top right, but it was off target and went out of play. The teams competing are Aston Villa and Southampton.",
     "id": 44,
     "sport": "soccer",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/soccer/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 432
   }
 ];

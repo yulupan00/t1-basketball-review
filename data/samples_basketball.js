@@ -2,54 +2,56 @@
 window.SAMPLES = [
   {
     "action_accuracy": {
-      "gt_analysis": "Action: Elisa Pinzan committed a foul.",
-      "pred_analysis": "Action: Elena Tsineke committed a foul.",
-      "justification_cot": "Match: both describe the same primary action type (a foul being committed). No additional action attributes (shooting foul, reach-in, etc.) are present in GT, so Pred is not missing action-type specificity. Main action is correct despite identity/score issues.",
+      "gt_analysis": "Action: Keishana Washington makes (successfully converts) a free throw.",
+      "pred_analysis": "Action: Maura Hendrixon makes (successfully converts) a free throw.",
+      "justification_cot": "Match: Both captions describe a successful made free throw. No additional action attributes (e.g., first/second FT, routine, rebound) are present in GT, and Pred does not add any different action type. Primary action is correct.",
       "score": 5
     },
     "identity_accuracy": {
-      "gt_analysis": "Entity: Elisa Pinzan is the player who committed the foul. Teams involved: South Florida vs North Carolina State.",
-      "pred_analysis": "Entity: Elena Tsineke is the player who committed the foul. Teams involved: North Carolina State vs South Florida.",
-      "justification_cot": "Mismatch (major): the fouling player is different (GT: Elisa Pinzan; Pred: Elena Tsineke). Teams are the same two programs and no roles are swapped among teams, but the primary actor identity is incorrect, which is a major identity error.",
-      "score": 2
+      "gt_analysis": "Entity: Keishana Washington is the shooter; jersey number #1.",
+      "pred_analysis": "Entity: Maura Hendrixon is the shooter; jersey number #22.",
+      "justification_cot": "Contradiction: Pred identifies a completely different shooter name and jersey number than GT. The primary actor identity (shooter) is wrong, and the jersey number is also wrong. Teams are not part of this category’s entity/role assignment for the shooter identity.",
+      "score": 0
     },
     "causality_outcome": {
-      "gt_analysis": "Outcome: a foul occurred/was committed by Elisa Pinzan. Game state at that moment: score 63-73.",
-      "pred_analysis": "Outcome: a foul occurred/was committed by Elena Tsineke. Game state at that moment: score 73-63.",
-      "justification_cot": "Partial match: both indicate the outcome/event is a committed foul. Contradictions: attribution of who committed it is wrong, and the stated score is reversed relative to GT. Since the key outcome (foul) is correct but attribution and linked game-state outcome are wrong, this is only partially reliable.",
-      "score": 2
+      "gt_analysis": "Outcome: The free throw is made (successful). No assist/rebound/foul attribution beyond the FT itself is stated.",
+      "pred_analysis": "Outcome: The free throw is made (successful). No extra causal links are stated.",
+      "justification_cot": "Match: Both correctly state the outcome as a made free throw. No causal chain beyond the made FT is required by GT, and Pred does not introduce an incorrect outcome (e.g., miss). Shooter attribution is incorrect, but the outcome itself aligns.",
+      "score": 4
     },
     "spatial_understanding": {
-      "gt_analysis": "No spatial/location details provided (no court area, direction, positioning).",
-      "pred_analysis": "No spatial/location details provided.",
-      "justification_cot": "Both omit spatial information; there are no spatial facts to contradict or verify.",
+      "gt_analysis": "Implicit location: free-throw line (standard for a free throw). No other spatial cues provided.",
+      "pred_analysis": "Implicit location: free-throw line. No other spatial cues provided.",
+      "justification_cot": "Match: Both are consistent with the standard spatial context of a free throw and do not add conflicting spatial details.",
       "score": 5
     },
     "temporal_understanding": {
-      "gt_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "pred_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "justification_cot": "Temporal structure matches: both describe one event happening during the game with a contemporaneous score. No sequencing or simultaneity differences can be introduced given the one-event caption.",
+      "gt_analysis": "Single event: made free throw; score given as current at 68–60 (implied at that moment).",
+      "pred_analysis": "Single event: made free throw; score given as current at 68–60.",
+      "justification_cot": "Match: Both describe one event with the score presented as the current game state; no sequencing conflicts exist.",
       "score": 5
     },
     "contextual_details": {
-      "gt_analysis": "Context: matchup between South Florida and North Carolina State; current score 63-73.",
-      "pred_analysis": "Context: matchup between North Carolina State and South Florida; current score 73-63.",
-      "justification_cot": "Teams: same two teams (order reversed, but that is not inherently incorrect). Critical context error: the score is flipped (GT 63-73 vs Pred 73-63), which misstates the game state.",
-      "score": 2
+      "gt_analysis": "Context: Teams are Drexel vs Towson; current score 68–60.",
+      "pred_analysis": "Context: Teams are Drexel vs Towson; current score 68–60.",
+      "justification_cot": "Match: Teams and score exactly match the GT. No additional game-state context in GT is omitted or contradicted.",
+      "score": 5
     },
     "final_holistic_score": {
-      "gt_analysis": "Main event: Elisa Pinzan commits a foul in South Florida vs NC State game; score 63-73.",
-      "pred_analysis": "Main event: Elena Tsineke commits a foul in NC State vs South Florida game; score 73-63.",
-      "justification_cot": "The caption gets the core event type (a foul) and the participating teams, but contains two major factual contradictions: (1) wrong primary player identity (fouler) and (2) incorrect game score (reversed). These errors make the caption unreliable for identifying the play and game state even though it is broadly on-topic.",
-      "score": 3
+      "gt_analysis": "Main event: Keishana Washington (#1) makes a free throw; Drexel vs Towson; score 68–60.",
+      "pred_analysis": "Main event: Maura Hendrixon (#22) makes a free throw; Drexel vs Towson; score 68–60.",
+      "justification_cot": "The caption gets the main action (made free throw) and all contextual game details (teams, score) correct, but commits one Major Error by misidentifying the primary player (name and jersey number). With everything else aligned and no critical outcome error, this is best characterized as 'Good' with exactly one major identity error.",
+      "score": 4
     },
+    "cost": 0.0120813,
+    "data_source": "263556250",
     "video": "/mnt/sun/shared/datasets/aggregated_clips/18-23_clips/22-23/156_NCAA Division I (W)/537559/537559_Keishana Washington_1+_263556250.mp4",
     "ground_truth": "Keishana Washington, wearing #1, successfully made a free throw. The game is between Drexel and Towson, with the current score at 68 - 60.",
     "prediction": "Maura Hendrixon, wearing #22, successfully made a free throw. The teams competing are Drexel and Towson, with the current score at 68 - 60.",
     "id": 33,
     "sport": "basketball",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 225
   },
   {
@@ -162,106 +164,110 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Primary action: Elisa Pinzan committed a foul.",
-      "pred_analysis": "Primary action: Elena Tsineke committed a foul.",
-      "justification_cot": "Match: Both captions describe the same core action type (a foul being committed). No additional action attributes (e.g., shooting foul, reach-in) are present in GT to verify. Difference is only in who committed it (handled in identity) and surrounding context (score/teams). Action verb and action type align.",
+      "gt_analysis": "Sequence of actions: (1) Thoranna Kika Hodge-Carr #10 assists. (2) Judith Gomez #32 performs a catch-and-shoot 3-point jumper. (3) Shot is taken with her right hand. (4) Shot is made.",
+      "pred_analysis": "Sequence of actions: (1) Juana Camilion (#22) assists. (2) Juana Camilion again takes a catch-and-shoot 3-point jumper. (3) Shot is taken with right hand. (4) Shot is made.",
+      "justification_cot": "Matches: Pred correctly captures the core play type and shot action: an assist leading to a catch-and-shoot 3-point jumper from the wing, right-handed, and made. Omissions: none major in the action description itself. Minor/none: the only action-related mismatch is indirect—Pred’s action is tied to wrong identities, but the verb/action sequence (assist → catch-and-shoot 3 → made) aligns with GT.",
       "score": 5
     },
     "identity_accuracy": {
-      "gt_analysis": "Entity committing the foul: Elisa Pinzan. Teams involved: South Florida vs North Carolina State.",
-      "pred_analysis": "Entity committing the foul: Elena Tsineke. Teams involved: North Carolina State vs South Florida.",
-      "justification_cot": "Mismatch (major): The fouling player is different (GT: Elisa Pinzan; Pred: Elena Tsineke). Match: Both reference the same two teams; order is reversed but the matchup is the same. Roles: Pred still assigns the foul-committer role to the named player, but it is the wrong person relative to GT.",
-      "score": 2
+      "gt_analysis": "Entities/roles: Assister = Thoranna Kika Hodge-Carr #10. Shooter = Judith Gomez #32. Defender mentioned = Elisa Mevius #24 (not contesting). Teams: Iona vs Siena.",
+      "pred_analysis": "Entities/roles: Assister = Juana Camilion #22. Shooter = Juana Camilion #22 (same person). Defender = Ahniysha Jackson #1 (contesting). Teams: Iona vs Siena.",
+      "justification_cot": "Contradictions: Assister identity is wrong (#10 Hodge-Carr vs #22 Camilion). Shooter identity is wrong (#32 Gomez vs #22 Camilion), and roles collapse into the same player in Pred, which contradicts GT’s passer-to-shooter relationship. Defender identity is also wrong (Elisa Mevius #24 vs Ahniysha Jackson #1). Matches: team identities (Iona and Siena) are correct. Overall, the primary and secondary entities/roles are largely misidentified.",
+      "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcome/event stated: a foul was committed (no further outcome like free throws stated). Game state given: score is 63-73 at that time.",
-      "pred_analysis": "Outcome/event stated: a foul was committed. Game state given: score is 73-63 at that time.",
-      "justification_cot": "Match: Both indicate the occurrence of a foul (event outcome). Contradiction (major): The score is reversed compared to GT (63-73 vs 73-63), which is a factual error about the stated game state/outcome context. No other causal links are present in either caption.",
+      "gt_analysis": "Causal link: Hodge-Carr #10 assisted Gomez #32. Outcome: Gomez made the 3-point jumper; score becomes 8–2 after the shot.",
+      "pred_analysis": "Causal link: Camilion #22 assisted Camilion #22. Outcome: made 3-point jumper; score becomes 8–2 after the shot.",
+      "justification_cot": "Matches: Pred correctly states the shot was made and that the score is 8–2 following the shot. Contradictions: the assist link is attributed to the wrong players and incorrectly implies self-assist (assister and scorer are the same), which breaks the GT causal attribution. So the main outcome is right, but the key causal attribution (who assisted whom) is wrong.",
       "score": 3
     },
     "spatial_understanding": {
-      "gt_analysis": "No spatial/location details provided (no court area, direction, positioning).",
-      "pred_analysis": "No spatial/location details provided.",
-      "justification_cot": "Both captions omit spatial information, and none is required by GT. No contradictions or hallucinated spatial cues.",
-      "score": 5
+      "gt_analysis": "Location: 3-point jumper taken from the wing. Defensive spatial relation: shooter is uncontested by defender Elisa Mevius #24.",
+      "pred_analysis": "Location: 3-point jumper from the wing. Defensive spatial relation: shooter is contested by Ahniysha Jackson #1.",
+      "justification_cot": "Matches: wing location is correct. Contradiction: GT explicitly says uncontested, while Pred says contested (and by a different defender). This is a major spatial/defensive-context mismatch even though the court spot (wing) is correct.",
+      "score": 3
     },
     "temporal_understanding": {
-      "gt_analysis": "Single event described: foul committed during the matchup; score is given as the current score at that moment.",
-      "pred_analysis": "Single event described: foul committed during the matchup; score is given as the current score at that moment.",
-      "justification_cot": "Temporal structure matches: both describe a foul occurring during the game and reference the score as concurrent ('current score') with the foul. No multi-step sequence to misorder.",
+      "gt_analysis": "Order: assist happens first → catch-and-shoot 3-pointer attempt → made basket → updated score (8–2) after the shot. No extra intermediate actions described.",
+      "pred_analysis": "Order: assist → catch-and-shoot 3-pointer → made basket → updated score (8–2) after the shot.",
+      "justification_cot": "Matches: Pred preserves the same event sequence and the 'following the shot' timing for the score update. Differences (contested/uncontested, identities) do not alter the temporal ordering. No sequencing errors are introduced.",
       "score": 5
     },
     "contextual_details": {
-      "gt_analysis": "Context: matchup between South Florida and North Carolina State; current score 63-73.",
-      "pred_analysis": "Context: matchup between North Carolina State and South Florida; current score 73-63.",
-      "justification_cot": "Partial match: teams are the same (order swapped, which is not inherently wrong). Major error: score is inverted relative to GT, which is a critical piece of game-state context. Additionally, the fouling player's identity is wrong (also a key contextual detail about the event).",
-      "score": 2
-    },
-    "final_holistic_score": {
-      "gt_analysis": "Elisa Pinzan committed a foul in South Florida vs North Carolina State; score 63-73.",
-      "pred_analysis": "Elena Tsineke committed a foul in North Carolina State vs South Florida; score 73-63.",
-      "justification_cot": "Main event type is correct (a foul in the correct matchup), but there are two major factual contradictions: (1) wrong foul-committing player (Pinzan vs Tsineke) and (2) wrong score (reversed). These errors make the caption unreliable for identifying the specific play context despite capturing the general idea that a foul occurred in that game.",
+      "gt_analysis": "Context: teams are Iona and Siena; play is catch-and-shoot wing 3; defensive context is uncontested; score is 8–2 after the made shot.",
+      "pred_analysis": "Context: teams are Iona and Siena; play is catch-and-shoot wing 3; defensive context is contested; score is 8–2 after the made shot.",
+      "justification_cot": "Matches: teams and score (8–2) are correct; catch-and-shoot wing 3 context is also correct. Contradiction: defensive context is wrong (GT uncontested vs Pred contested). Identities are also wrong, but team/game-state context is partially correct.",
       "score": 3
     },
+    "final_holistic_score": {
+      "gt_analysis": "Primary facts: Hodge-Carr #10 assists Gomez #32 for an uncontested right-handed catch-and-shoot wing 3 that is made; Iona vs Siena; score 8–2 after the shot.",
+      "pred_analysis": "Primary facts claimed: Camilion #22 assists Camilion #22 for a contested right-handed catch-and-shoot wing 3 that is made; Iona vs Siena; score 8–2 after the shot.",
+      "justification_cot": "The caption gets the main play result and general shot description right (made catch-and-shoot wing 3, right hand, score 8–2, correct teams). However, it contains multiple Major Errors: wrong assister, wrong shooter (and implausible self-assist), wrong defender identity, and wrong contest status (contested vs uncontested). These identity and defensive-context errors substantially reduce reliability even though the made 3 and game state are correct.",
+      "score": 2
+    },
+    "cost": 0.01936655,
+    "data_source": "276599779",
     "video": "/mnt/sun/shared/datasets/aggregated_clips/18-23_clips/22-23/156_NCAA Division I (W)/644219/644219_Judith Gomez_3+_276599779.mp4",
     "ground_truth": "Thoranna Kika Hodge-Carr #10 assisted Judith Gomez #32, who made a 3-point jumper from the wing during a catch and shoot with her right hand, uncontested by defender Elisa Mevius #24. The teams competing are Iona and Siena, with the current score at 8-2 following the shot.",
     "prediction": "Juana Camilion, wearing #22, assisted Juana Camilion again. She then made a 3-point jumper from the wing during a catch-and-shoot, using her right hand while contested by Ahniysha Jackson, who is wearing #1. The teams playing are Iona and Siena, with the current score at 8 - 2 following the shot.",
     "id": 32,
     "sport": "basketball",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 429
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Primary action: Elisa Pinzan committed a foul.",
-      "pred_analysis": "Primary action: Elena Tsineke committed a foul.",
-      "justification_cot": "Match: Both captions describe the same core action type (a foul being committed). No other action attributes (type of foul, on whom, shooting vs. non-shooting) are present in either caption to compare. Thus, action correctness is preserved despite other mismatches in identity/context.",
-      "score": 5
+      "gt_analysis": "Actions: (1) Mikhail Smirnov commits a turnover. (2) Mikhail Smirnov commits a foul.",
+      "pred_analysis": "Actions: (1) Dmitriy Kuimov commits a foul.",
+      "justification_cot": "Match: both captions include that a foul was committed. Omissions: the turnover action in GT is entirely missing in Pred. Specificity: Pred only reports one of the two key actions and therefore under-specifies the full play description.",
+      "score": 2
     },
     "identity_accuracy": {
-      "gt_analysis": "Entity: Elisa Pinzan is the player who committed the foul.",
-      "pred_analysis": "Entity: Elena Tsineke is the player who committed the foul.",
-      "justification_cot": "Contradiction: Pred names a different player as the fouler (Elena Tsineke) than GT (Elisa Pinzan). This is a major identity error affecting the primary actor/role (fouler).",
+      "gt_analysis": "Entities: Mikhail Smirnov (#16) as the player committing both the turnover and the foul. Teams involved: BC Avtodor-2 Saratov vs BC Samara-2.",
+      "pred_analysis": "Entities: Dmitriy Kuimov (#10) as the player committing the foul. Teams involved: BC Avtodor-2 Saratov vs BC Samara-2.",
+      "justification_cot": "Teams match exactly. Primary actor identity is a major contradiction: Pred names a different player (Dmitriy Kuimov vs Mikhail Smirnov) and a different jersey number (#10 vs #16), assigning the foul to the wrong person relative to GT.",
       "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcome/event: A foul was committed by Elisa Pinzan (no additional result like free throws specified).",
-      "pred_analysis": "Outcome/event: A foul was committed by Elena Tsineke (no additional result specified).",
-      "justification_cot": "Match on high-level outcome: both indicate that a foul occurred/was committed. Attribution/causality to the correct player is wrong in Pred (different fouler), which is a major error in outcome attribution, but the event outcome itself (a foul happened) is correct.",
-      "score": 3
+      "gt_analysis": "Outcomes: turnover occurred (possession lost) and a foul occurred, both attributed to Smirnov. Game state outcome shown as score 83–62 at that time.",
+      "pred_analysis": "Outcomes: a foul occurred, attributed to Kuimov. Game state shown as score 13–6.",
+      "justification_cot": "Partial outcome match: a foul occurred. Major attribution error: foul credited to the wrong player. Major omission: turnover outcome missing. Additional major contradiction: score is completely different (13–6 vs 83–62), which is part of the stated outcome/game state.",
+      "score": 1
     },
     "spatial_understanding": {
       "gt_analysis": "No spatial/location details provided (no court area, direction, or positioning).",
       "pred_analysis": "No spatial/location details provided.",
-      "justification_cot": "Both captions omit spatial information; no contradictions or hallucinated spatial cues to penalize.",
+      "justification_cot": "Both omit spatial information; there is nothing to contradict or verify spatially.",
       "score": 5
     },
     "temporal_understanding": {
-      "gt_analysis": "Single event presented: foul committed during the matchup; score is the current score at that time.",
-      "pred_analysis": "Single event presented: foul committed during the matchup; score is the current score at that time.",
-      "justification_cot": "Both present the same simple temporal structure (a foul occurring during the game with the score at that moment). No sequencing or simultaneity differences are introduced.",
-      "score": 5
+      "gt_analysis": "Sequence implied: turnover and foul both occurred (GT does not specify which came first), at a moment when the score was 83–62.",
+      "pred_analysis": "Only one event (a foul) is described, at a moment when the score was 13–6.",
+      "justification_cot": "Because Pred drops the turnover entirely, it fails to preserve the multi-event temporal structure of GT. Also, the referenced game moment via score does not align (different score), implying a different time in the game.",
+      "score": 2
     },
     "contextual_details": {
-      "gt_analysis": "Context: matchup between South Florida and North Carolina State; current score 63-73.",
-      "pred_analysis": "Context: matchup between North Carolina State and South Florida; current score 73-63.",
-      "justification_cot": "Teams: same two teams, order reversed but that alone is not an error. Score: Pred inverts the score (73-63) versus GT (63-73), which is a major game-state/context error because it changes who is leading and the actual scoreline.",
+      "gt_analysis": "Context: game between BC Avtodor-2 Saratov and BC Samara-2; score 83–62; player Smirnov #16; includes both turnover and foul in that context.",
+      "pred_analysis": "Context: same teams; score 13–6; player Kuimov #10; only foul mentioned.",
+      "justification_cot": "Teams are correct. Critical contextual elements are wrong: player identity/number and especially the score (major contradiction). Play context is also incomplete because the turnover is omitted.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Key facts: Elisa Pinzan committed a foul; game is South Florida vs North Carolina State; score is 63-73 at that time.",
-      "pred_analysis": "Key facts: Elena Tsineke committed a foul; game is NC State vs South Florida; score is 73-63.",
-      "justification_cot": "Pred captures the main event that a foul was committed in the South Florida vs NC State game, but makes two major factual errors: (1) wrong primary player committing the foul (Pinzan vs Tsineke) and (2) incorrect/inverted score (63-73 vs 73-63). These errors make the caption unreliable in key details while still being broadly on-topic (foul in this matchup). Under the rubric, two major errors yields an 'Acceptable' but unreliable overall caption.",
-      "score": 3
+      "gt_analysis": "Main information: Smirnov (#16) committed both a turnover and a foul; teams Avtodor-2 Saratov vs Samara-2; score 83–62.",
+      "pred_analysis": "Main information: Kuimov (#10) committed a foul; same teams; score 13–6.",
+      "justification_cot": "The caption keeps only a small overlap (there was a foul; teams correct) but has multiple major errors: wrong player, wrong jersey number, wrong score, and omission of the turnover. These errors make the description unreliable and misleading despite partial relevance.",
+      "score": 2
     },
+    "cost": 0.0136948,
+    "data_source": "261387325",
     "video": "/mnt/sun/shared/datasets/aggregated_clips/18-23_clips/22-23/24_VTB Youth United League/616301/616301_Mikhail Smirnov_Foul_261387325.mp4",
     "ground_truth": "Mikhail Smirnov, wearing #16, committed a turnover and a foul during the game between BC Avtodor-2 Saratov and BC Samara-2, with the current score standing at 83 - 62.",
     "prediction": "Dmitriy Kuimov, wearing #10, committed a foul during the matchup between BC Avtodor-2 Saratov and BC Samara-2. The current score stands at 13 - 6.",
     "id": 35,
     "sport": "basketball",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 603
   },
   {
@@ -320,54 +326,56 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Primary action: Elisa Pinzan committed a foul.",
-      "pred_analysis": "Primary action: Elena Tsineke committed a foul.",
-      "justification_cot": "GT action is a foul committed by a player. Pred also states a foul was committed, matching the main verb/action type. No additional action attributes (shooting foul, reach-in, etc.) are present in GT, so none can be mismatched. The only divergence is the actor identity (handled in identity category), not the action itself.",
-      "score": 5
+      "gt_analysis": "Actions: (1) Bruce Brown runs a Pick-and-Roll. (2) Brown finishes with a right-handed layup. (No dunk; no cut specified.)",
+      "pred_analysis": "Actions: (1) Kyrie Irving assists. (2) Day'Ron Sharpe scores on a cut. (3) Sharpe finishes with a right-handed dunk.",
+      "justification_cot": "Match: both describe a right-handed finish at the rim in the restricted area. Omissions/contradictions: GT’s primary action is a Pick-and-Roll leading to a right-handed layup; Pred instead describes a cut leading to a right-handed dunk. Dunk vs layup is a major action-type mismatch, and pick-and-roll vs cut is another major mismatch. Pred also inserts an assist action by a different player (ties to identity, but also changes the described play action).",
+      "score": 1
     },
     "identity_accuracy": {
-      "gt_analysis": "Entity: Elisa Pinzan is the player who committed the foul. Teams involved: South Florida vs North Carolina State.",
-      "pred_analysis": "Entity: Elena Tsineke is the player who committed the foul. Teams involved: North Carolina State vs South Florida.",
-      "justification_cot": "Match: same two teams are mentioned (though order swapped). Contradiction/major error: the fouling player is misidentified (Elena Tsineke vs Elisa Pinzan). Role assignment (fouler) is attached to the wrong person relative to GT.",
-      "score": 2
+      "gt_analysis": "Entities/roles: Bruce Brown = scorer/ballhandler; James Harden = assister; Kelly Oubre Jr. = primary contesting defender. Teams: Brooklyn Nets vs Charlotte Hornets.",
+      "pred_analysis": "Entities/roles: Day'Ron Sharpe = scorer; Kyrie Irving = assister; Mason Plumlee = contesting defender. Teams: Brooklyn Nets vs Charlotte Hornets.",
+      "justification_cot": "Match: correct teams (Nets vs Hornets). Contradictions: scorer is wrong (Sharpe vs Bruce Brown), assister is wrong (Irving vs Harden), and defender contesting is wrong (Plumlee vs Oubre). These are primary-role identity errors (shooter/assister/defender), not minor omissions.",
+      "score": 1
     },
     "causality_outcome": {
-      "gt_analysis": "Outcome/event: a foul was committed. Game state at that moment: score is 63-73. No further causal chain (e.g., free throws) is specified.",
-      "pred_analysis": "Outcome/event: a foul was committed. Game state at that moment: score is 73-63.",
-      "justification_cot": "Match: it correctly indicates that the event outcome is a foul being committed (no additional consequences required by GT). Major contradiction: the stated score is inverted compared to GT (73-63 vs 63-73), which is a key factual outcome/context tied to the moment.",
+      "gt_analysis": "Outcome/links: Harden assists Brown’s right-handed layup; shot is contested by Oubre Jr.; implied result is a made layup (a finishing play) with score shown as 68–64 at that moment.",
+      "pred_analysis": "Outcome/links: Irving assists Sharpe’s right-handed dunk on a cut; contested by Plumlee; score is 70–64 following the shot (implies made basket and score change).",
+      "justification_cot": "Partial match: both describe an assisted, contested made finish at the rim. Major issues: the causal chain (who assisted whom) is incorrect, the defender causing the contest is incorrect, and the stated score/outcome context conflicts with GT (GT shows 68–64, Pred asserts 70–64 after the shot). Even if both are “made,” the attribution and game-state result are wrong.",
       "score": 2
     },
     "spatial_understanding": {
-      "gt_analysis": "No spatial/location information provided (no court area, direction, or positioning).",
-      "pred_analysis": "No spatial/location information provided.",
-      "justification_cot": "Both GT and Pred omit spatial details; there are no spatial claims to contradict or verify.",
-      "score": 5
+      "gt_analysis": "Location: finish is a right-handed layup from the Restricted Area; contest by Oubre Jr. at the rim area.",
+      "pred_analysis": "Location: right-handed dunk from the restricted area; contested by Plumlee.",
+      "justification_cot": "Match: both place the attempt in the restricted area (correct core location). Minor-to-major deviations: Pred changes the finishing type (dunk vs layup) but still remains in the same spatial zone; no additional incorrect court locations are introduced. Defender positioning is tied to wrong identity, but spatial cue itself (at rim/restricted) aligns.",
+      "score": 4
     },
     "temporal_understanding": {
-      "gt_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "pred_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "justification_cot": "Both describe the same simple temporal structure: during the game, a foul occurs, and the score is stated as current at that moment. No sequencing conflicts exist because no multi-step timeline is present.",
-      "score": 5
+      "gt_analysis": "Sequence: Pick-and-roll action develops → Brown attempts right-handed layup in restricted area → Oubre contests the shot; Harden is the passer/assist leading into the finish.",
+      "pred_analysis": "Sequence: Cut occurs → Irving assists Sharpe → Sharpe dunks right-handed in restricted area while being contested by Plumlee → score described as after the shot.",
+      "justification_cot": "Some structural similarity: setup action leads to an assisted rim finish that is contested. However, Pred replaces the P&R progression with a cut and frames the assist explicitly before the dunk; GT’s core sequence is P&R into layup. The overall temporal skeleton (action → assist/finish → contest) is loosely aligned, but key event type ordering/context differs.",
+      "score": 3
     },
     "contextual_details": {
-      "gt_analysis": "Context: matchup is South Florida vs North Carolina State. Game score at the time: 63-73.",
-      "pred_analysis": "Context: matchup is North Carolina State vs South Florida. Game score at the time: 73-63.",
-      "justification_cot": "Teams: correct set of teams (order swapped is not inherently wrong). Critical contextual error: the score is incorrect (reversed), which is a key game-state detail. Additionally, the wrong player name is included, which is also contextual to the event description.",
+      "gt_analysis": "Context: Teams are Brooklyn Nets vs Charlotte Hornets; score is 68–64; play type is Pick-and-Roll; contested finish.",
+      "pred_analysis": "Context: Teams are Brooklyn Nets vs Charlotte Hornets; score is 70–64 following the shot; play type is a cut; contested finish.",
+      "justification_cot": "Match: correct teams and that the play is contested. Errors: score is wrong (70–64 vs 68–64) and play context is wrong (cut vs pick-and-roll). These are major contextual inaccuracies, with the score being a concrete game-state mismatch.",
       "score": 2
     },
     "final_holistic_score": {
-      "gt_analysis": "Main facts: Elisa Pinzan committed a foul; game is South Florida vs NC State; score is 63-73.",
-      "pred_analysis": "Main facts: Elena Tsineke committed a foul; game is NC State vs South Florida; score is 73-63.",
-      "justification_cot": "The caption preserves the general idea (a foul in the South Florida vs NC State game) but contains two major factual contradictions: (1) wrong primary player committing the foul, and (2) wrong score (reversed). These are key reliability issues even though the action type and teams are otherwise aligned.",
-      "score": 3
+      "gt_analysis": "Main event: Bruce Brown scores a right-handed layup from the restricted area off a Harden assist out of pick-and-roll, contested by Oubre; score shown 68–64; Nets vs Hornets.",
+      "pred_analysis": "Main event: Sharpe scores a right-handed dunk from restricted area off an Irving assist on a cut, contested by Plumlee; score 70–64; Nets vs Hornets.",
+      "justification_cot": "The caption preserves only a narrow overlap: Nets vs Hornets and a contested right-handed restricted-area finish. It contains multiple major errors: wrong scorer, wrong assister, wrong defender, wrong play type (P&R vs cut), wrong shot type (layup vs dunk), and wrong score. Although the outcome is still described as a made rim attempt, the accumulation of major contradictions makes the caption misleading and unreliable.",
+      "score": 2
     },
+    "cost": 0.01844955,
+    "data_source": "184430589",
     "video": "/mnt/sun/shared/datasets/aggregated_clips/18-23_clips/21-22/3_NBA/11909/11909_Bruce Brown_2+_184430589.mp4",
     "ground_truth": "Bruce Brown executed a Pick-and-Roll, finishing with a right-handed layup from the Restricted Area, assisted by James Harden. The shot was contested by Kelly Oubre Jr. The teams in action are the Brooklyn Nets and the Charlotte Hornets, with the current score standing at 68-64.",
     "prediction": "Kyrie Irving assisted Day'Ron Sharpe, who executed a right-handed dunk from the restricted area during a cut, despite being contested by Mason Plumlee. The teams competing are the Brooklyn Nets and Charlotte Hornets, with the current score at 70 - 64 following the shot.",
     "id": 34,
     "sport": "basketball",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 459
   },
   {
@@ -480,54 +488,56 @@ window.SAMPLES = [
   },
   {
     "action_accuracy": {
-      "gt_analysis": "Primary action: Elisa Pinzan committed a foul.",
-      "pred_analysis": "Primary action: Elena Tsineke committed a foul.",
-      "justification_cot": "Match: Both describe a foul being committed (correct action type). Differences: No additional action attributes in GT (e.g., shooting foul, reach-in), so the action itself is aligned. The only divergence is the actor identity, which is handled in the identity category rather than action type.",
-      "score": 5
+      "gt_analysis": "Sequence of actions: (1) Danilo Tasic attempts a 2-point jumper from the restricted area; it is a right-handed fadeaway; the shot is contested by Vladimir Micov. (2) Marko Jagodic-Kuridza collects/secured the rebound. (3) Ranko Simovic commits a foul.",
+      "pred_analysis": "Actions stated: (1) Marko Jagodic-Kuridza secured a rebound. (2) Aleksa Uskokovic committed a foul.",
+      "justification_cot": "Match: Pred correctly includes the rebound being secured by Marko Jagodic-Kuridza. Omissions: Pred completely omits the primary action (Danilo Tasic’s right-handed fadeaway 2-point jumper attempt) and the contest by Vladimir Micov. It also lacks shot type/attributes (2-point jumper, restricted area, fadeaway, right-handed) which are central in GT. Contradiction: none on the rebound itself, but foul actor differs (handled in identity/causality). Overall, only a secondary action is captured; main action is missing.",
+      "score": 2
     },
     "identity_accuracy": {
-      "gt_analysis": "Entity committing the foul: Elisa Pinzan. Teams involved: South Florida vs North Carolina State.",
-      "pred_analysis": "Entity committing the foul: Elena Tsineke. Teams involved: North Carolina State vs South Florida.",
-      "justification_cot": "Mismatch (major): The fouling player is different (Pred names Elena Tsineke; GT says Elisa Pinzan). Match: Both mention the same two teams; ordering is swapped but still the same matchup (team identity correct). Overall: Primary actor identity is wrong, which is a major identity error.",
+      "gt_analysis": "Entities and roles: Danilo Tasic = shooter (jumper attempt). Vladimir Micov = primary contesting defender. Marko Jagodic-Kuridza = rebounder. Ranko Simovic = player committing the foul. Teams: FMP Beograd vs KK Buducnost.",
+      "pred_analysis": "Entities and roles: Marko Jagodic-Kuridza = rebounder. Aleksa Uskokovic = player committing the foul. Teams: FMP Beograd vs KK Buducnost.",
+      "justification_cot": "Match: Marko Jagodic-Kuridza is correctly identified as the rebounder; teams are correctly identified. Omissions: Danilo Tasic and Vladimir Micov are missing entirely, removing the shooter/contester identities. Major error: foul is attributed to Aleksa Uskokovic in Pred, but GT says Ranko Simovic committed the foul (wrong primary actor for that event).",
       "score": 2
     },
     "causality_outcome": {
-      "gt_analysis": "Outcome/event: A foul was committed (no further outcomes such as free throws specified). Game state at that moment: score 63–73.",
-      "pred_analysis": "Outcome/event: A foul was committed. Game state at that moment: score 73–63.",
-      "justification_cot": "Match: Both state that a foul occurred (core outcome present). Contradiction (major): The score is reversed relative to GT (63–73 vs 73–63), which makes the stated game state/outcome context incorrect. No additional causal links (e.g., who drew the foul) are present in either.",
-      "score": 3
-    },
-    "spatial_understanding": {
-      "gt_analysis": "No spatial/location details are provided (no court area, direction, or positioning).",
-      "pred_analysis": "No spatial/location details are provided.",
-      "justification_cot": "Both omit spatial information; there are no contradictions because neither provides spatial claims to verify.",
-      "score": 5
-    },
-    "temporal_understanding": {
-      "gt_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "pred_analysis": "Single event described: foul committed during the matchup; score given as the current score at that time.",
-      "justification_cot": "Temporal structure matches: both describe one event occurring during the game with a contemporaneous score. No sequencing or simultaneity differences to evaluate beyond that.",
-      "score": 5
-    },
-    "contextual_details": {
-      "gt_analysis": "Context: matchup between South Florida and North Carolina State; current score is 63–73.",
-      "pred_analysis": "Context: matchup between North Carolina State and South Florida; current score is 73–63.",
-      "justification_cot": "Match: Same two teams are involved (ordering swapped but equivalent). Contradiction (major): Score is incorrect/reversed compared to GT. Also, the key contextual identity (who committed the foul) is wrong, which harms contextual reliability as well.",
+      "gt_analysis": "Outcomes and links: Tasic’s contested right-handed fadeaway jumper is attempted and missed (implied by rebound). Jagodic-Kuridza then collects the rebound. After/around that, Ranko Simovic commits a foul.",
+      "pred_analysis": "Outcomes and links: Jagodic-Kuridza secured a rebound. Aleksa Uskokovic committed a foul. No shot attempt or contest is mentioned.",
+      "justification_cot": "Match: Rebound outcome by Jagodic-Kuridza aligns with GT. Omissions: Pred does not provide the causal precursor for the rebound (the missed jumper attempt) and omits the contested-shot context entirely. Major attribution error: the foul outcome is credited to the wrong player (Uskokovic vs GT’s Simovic), breaking the correctness of that event’s causality/attribution.",
       "score": 2
     },
-    "final_holistic_score": {
-      "gt_analysis": "Elisa Pinzan committed a foul in South Florida vs North Carolina State; score 63–73.",
-      "pred_analysis": "Elena Tsineke committed a foul in North Carolina State vs South Florida; score 73–63.",
-      "justification_cot": "The caption preserves the main event type (a foul) and the correct teams, but contains two major factual contradictions: (1) wrong fouling player (primary identity error) and (2) reversed/incorrect score (game state error). With two major errors, overall reliability is only acceptable at best and potentially misleading for identifying the play.",
+    "spatial_understanding": {
+      "gt_analysis": "Spatial details: shot is a 2-point jumper from the restricted area; right-handed fadeaway; contested by Micov (implies close proximity contest near the rim).",
+      "pred_analysis": "No spatial locations or directions are provided; only rebound and foul are mentioned.",
+      "justification_cot": "Omission: Pred includes no location information (restricted area) and no spatial/positional relationship (contest by Micov, fadeaway orientation). Since spatial content is entirely absent, it fails to capture the key spatial facts from GT.",
+      "score": 0
+    },
+    "temporal_understanding": {
+      "gt_analysis": "Event order: Shot attempt (contested fadeaway) → rebound by Jagodic-Kuridza → foul by Simovic.",
+      "pred_analysis": "Event order given: rebound by Jagodic-Kuridza → foul by Uskokovic. No preceding shot attempt is included.",
+      "justification_cot": "Partial alignment: Pred keeps a plausible later sequence of rebound then foul, which matches the latter portion of GT’s timeline. Major omission: the initiating event (shot attempt/contest) that precedes the rebound is missing, so the full temporal structure is incomplete. Also the foul actor is wrong (identity issue), but ordering of the included events is not obviously reversed.",
       "score": 3
     },
+    "contextual_details": {
+      "gt_analysis": "Context: Teams are FMP Beograd vs KK Buducnost; score is 12-0; play context includes a contested right-handed fadeaway jumper from restricted area.",
+      "pred_analysis": "Context included: Teams are FMP Beograd vs KK Buducnost; score is 12-0. No play/defensive context beyond rebound and foul.",
+      "justification_cot": "Match: Teams and exact score are correct. Omission: Pred lacks the key play context (shot type, restricted area, contested fadeaway). Still, core game-state context (teams/score) is accurately conveyed.",
+      "score": 4
+    },
+    "final_holistic_score": {
+      "gt_analysis": "Main event is Tasic’s contested right-handed fadeaway 2-point jumper from the restricted area, followed by Jagodic-Kuridza rebound and Simovic foul; teams FMP Beograd vs KK Buducnost; score 12-0.",
+      "pred_analysis": "Captures Jagodic-Kuridza rebound and teams/score, but omits the shot attempt/contest entirely and misidentifies the fouling player as Uskokovic.",
+      "justification_cot": "The caption is missing the primary play description (the shot attempt and contest), which is a major omission, and it also contains a major factual error by naming the wrong player committing the foul. While it correctly states the rebounder and game context (teams/score), the absence of the main action plus the incorrect foul attribution makes it unreliable for play-level understanding.",
+      "score": 3
+    },
+    "cost": 0.019104049999999997,
+    "data_source": "232062483",
     "video": "/mnt/sun/shared/datasets/aggregated_clips/18-23_clips/21-22/13_ABA League/8662/8662_Ranko Simovic_Foul_232062483.mp4",
     "ground_truth": "Danilo Tasic attempted a 2-point jumper from the restricted area, using a right-handed fadeaway while being contested by Vladimir Micov. Marko Jagodic-Kuridza collected the rebound, and Ranko Simovic committed a foul. The teams on the court are FMP Beograd and KK Buducnost, with the current score standing at 12 - 0.",
     "prediction": "Marko Jagodic-Kuridza secured a rebound while Aleksa Uskokovic committed a foul. The teams competing are FMP Beograd and KK Buducnost, with the current score standing at 12 - 0.",
     "id": 31,
     "sport": "basketball",
     "model": "sports_100k_f16_full_ft",
-    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all.json",
+    "source_file": "sports_pool1_final/sports_100k_f16_full_ft/basketball/val/caption_eval_f16_outputs_1k_gpt-5.2-2025-12-11_scores_all_new.json",
     "source_index": 558
   },
   {
